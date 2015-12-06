@@ -4,17 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Nimble.xcscheme</key>
+		<key>Nimble.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-TrackableTests.xcscheme</key>
+		<key>Pods-TrackableTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Quick.xcscheme</key>
+		<key>Quick.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
