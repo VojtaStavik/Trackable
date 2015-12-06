@@ -17,16 +17,36 @@ public struct TrackedProperty {
     }
 }
 
-//// Values which can be used in JSON
-//public protocol TrackableValue : TrackedPropertyEvaluatable { }
-//
-//extension String :  TrackableValue { public var value : AnyObject { return self } }
-//extension Int :     TrackableValue { public var value : AnyObject { return self } }
-//extension Bool :    TrackableValue { public var value : AnyObject { return self } }
-//extension Double :  TrackableValue { public var value : AnyObject { return self } }
-//
-//// Should we add dictionary as a trackable value, too?
-//
-//public protocol TrackedPropertyEvaluatable {
-//    var value : AnyObject { get }
-//}
+infix operator ~>> { associativity left }
+
+public func ~>> (key: Key, value: AnyObject) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+
+extension TrackedProperty : Equatable { }
+public func ==(l: TrackedProperty, r: TrackedProperty) -> Bool {
+    return l.key == r.key
+}
+
+extension TrackedProperty : Hashable {
+    public var hashValue : Int { return key.hash }
+}
+
+extension Set {
+    mutating func updateValuesFrom(properties: Set<TrackedProperty>) {
+        var mutableSelf = self
+        properties.flatMap { $0 as? Element}
+                  .forEach { mutableSelf.insert($0) }
+        self = mutableSelf
+    }
+    
+    var dictionaryRepresentation : [String : AnyObject] {
+        return self.flatMap { $0 as? TrackedProperty }
+                   .reduce([String: AnyObject]()) { result, element in
+                        var updatedResult = result
+                        updatedResult[element.key] = element.value
+                        return updatedResult
+                    }
+    }
+}

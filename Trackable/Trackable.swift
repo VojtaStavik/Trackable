@@ -21,20 +21,20 @@ import Foundation
 var trackEvent : ( (eventName: String, customInfo: [String: AnyObject]) -> Void )? = nil
 
 public protocol Trackable {
-    var trackedProperties: [TrackedProperty] { get }
+    var trackedProperties: Set<TrackedProperty> { get }
 }
 
 // Default implementation of Trackable. We don't want to return nil
 // as a default value, because we use internaly nil to identify released objects
 public extension Trackable {
-    var trackedProperties: [TrackedProperty] { return [] }
+    var trackedProperties: Set<TrackedProperty> { return [] }
 }
 
 
 // -----------------------------
 // Track event functions
 public extension Trackable {
-    public func track(event: Event, trackedProperties: [TrackedProperty]? = nil) {
+    public func track(event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
         
     }
 }

@@ -9,18 +9,31 @@
 import Foundation
 
 indirect enum ChainLink {
-    case Tracker(instanceProperties: [TrackedProperty]?, classProperties: () -> [TrackedProperty]?)
-    case Chainer(instanceProperties: [TrackedProperty]?, classProperties: () -> [TrackedProperty]? , parent: ChainLink?)
+    case Tracker(instanceProperties: Set<TrackedProperty>, classProperties: () -> Set<TrackedProperty>?)
+    case Chainer(instanceProperties: Set<TrackedProperty>, classProperties: () -> Set<TrackedProperty>? , parent: ChainLink?)
 }
 
 extension ChainLink {
-    func track(event: Event, trackedProperties: [TrackedProperty]?) {
+    func track(event: Event, trackedProperties: Set<TrackedProperty>) {
         switch self {
         case .Tracker(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure):
+            var properties = classPropertiesClosure() ?? Set<TrackedProperty>()
+            properties.updateValuesFrom(instanceProperties)
+            properties.updateValuesFrom(trackedProperties)
             
-            break
+            trackEvent?(eventName: event.description, customInfo: properties.dictionaryRepresentation)
+            
         case .Chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure, parent: let parent):
-            break
+            var properties = classPropertiesClosure() ?? Set<TrackedProperty>()
+            properties.updateValuesFrom(instanceProperties)
+            properties.updateValuesFrom(trackedProperties)
+            
+            if let parent = parent {
+                parent.track(event, trackedProperties: properties)
+            } else {
+                // parent was meanwhile released from memory, we just track the event
+                trackEvent?(eventName: event.description, customInfo: properties.dictionaryRepresentation)
+            }
         }
     }
 }
