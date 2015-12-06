@@ -10,7 +10,12 @@
 		60DFCB2903F9267E48D48899 /* Pods_TrackableTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DC1BD131068ACF3B34F6642 /* Pods_TrackableTests.framework */; };
 		A54798D61C14A33D00E88D1C /* Trackable.h in Headers */ = {isa = PBXBuildFile; fileRef = A54798D51C14A33D00E88D1C /* Trackable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A54798DD1C14A33D00E88D1C /* Trackable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A54798D21C14A33D00E88D1C /* Trackable.framework */; };
-		A54798E21C14A33D00E88D1C /* TrackableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798E11C14A33D00E88D1C /* TrackableTests.swift */; };
+		A54798ED1C14A53C00E88D1C /* Trackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798EC1C14A53C00E88D1C /* Trackable.swift */; };
+		A54798EF1C14A5D000E88D1C /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798EE1C14A5D000E88D1C /* Event.swift */; };
+		A54798F11C14A5D800E88D1C /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798F01C14A5D800E88D1C /* Key.swift */; };
+		A54798F31C14AB3100E88D1C /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798F21C14AB3100E88D1C /* Property.swift */; };
+		A54798F51C14B17100E88D1C /* Chainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798F41C14B17100E88D1C /* Chainer.swift */; };
+		A54798F91C14B72200E88D1C /* Key-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798F81C14B72200E88D1C /* Key-Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,8 +35,13 @@
 		A54798D51C14A33D00E88D1C /* Trackable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Trackable.h; sourceTree = "<group>"; };
 		A54798D71C14A33D00E88D1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A54798DC1C14A33D00E88D1C /* TrackableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A54798E11C14A33D00E88D1C /* TrackableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackableTests.swift; sourceTree = "<group>"; };
 		A54798E31C14A33D00E88D1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A54798EC1C14A53C00E88D1C /* Trackable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trackable.swift; sourceTree = "<group>"; };
+		A54798EE1C14A5D000E88D1C /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		A54798F01C14A5D800E88D1C /* Key.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		A54798F21C14AB3100E88D1C /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
+		A54798F41C14B17100E88D1C /* Chainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chainer.swift; sourceTree = "<group>"; };
+		A54798F81C14B72200E88D1C /* Key-Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Key-Tests.swift"; sourceTree = "<group>"; };
 		F08C512C395761AA74745D08 /* Pods-TrackableTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackableTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrackableTests/Pods-TrackableTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,6 +98,11 @@
 			children = (
 				A54798D51C14A33D00E88D1C /* Trackable.h */,
 				A54798D71C14A33D00E88D1C /* Info.plist */,
+				A54798EC1C14A53C00E88D1C /* Trackable.swift */,
+				A54798EE1C14A5D000E88D1C /* Event.swift */,
+				A54798F01C14A5D800E88D1C /* Key.swift */,
+				A54798F21C14AB3100E88D1C /* Property.swift */,
+				A54798F41C14B17100E88D1C /* Chainer.swift */,
 			);
 			path = Trackable;
 			sourceTree = "<group>";
@@ -95,8 +110,8 @@
 		A54798E01C14A33D00E88D1C /* TrackableTests */ = {
 			isa = PBXGroup;
 			children = (
-				A54798E11C14A33D00E88D1C /* TrackableTests.swift */,
 				A54798E31C14A33D00E88D1C /* Info.plist */,
+				A54798F81C14B72200E88D1C /* Key-Tests.swift */,
 			);
 			path = TrackableTests;
 			sourceTree = "<group>";
@@ -269,6 +284,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A54798EF1C14A5D000E88D1C /* Event.swift in Sources */,
+				A54798ED1C14A53C00E88D1C /* Trackable.swift in Sources */,
+				A54798F51C14B17100E88D1C /* Chainer.swift in Sources */,
+				A54798F31C14AB3100E88D1C /* Property.swift in Sources */,
+				A54798F11C14A5D800E88D1C /* Key.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +296,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A54798E21C14A33D00E88D1C /* TrackableTests.swift in Sources */,
+				A54798F91C14B72200E88D1C /* Key-Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,28 +403,33 @@
 		A54798E71C14A33D00E88D1C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Trackable/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.strv.Trackable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		A54798E81C14A33D00E88D1C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Trackable/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.strv.Trackable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
