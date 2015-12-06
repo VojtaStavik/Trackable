@@ -21,8 +21,8 @@ class PropertyTests : QuickSpec {
 
     override func spec() {
         describe("Set of properties") {
-            context("when called updateValueFrom") {
-                it("should add new value if the old one isn't in the set") {
+            context("updateValueFrom") {
+                it("should add new value") {
                     var testSet = Set<TrackedProperty>([TestKeys.value1 ~>> "value1old" , TestKeys.value2 ~>> "value2old"])
                     let newValue = TestKeys.value3 ~>> "value3new"
                     
@@ -46,7 +46,7 @@ class PropertyTests : QuickSpec {
                     }
                 }
 
-                it("should update value if called with the existing") {
+                it("should update existing value") {
                     var testSet = Set<TrackedProperty>([TestKeys.value1 ~>> "value1old" , TestKeys.value2 ~>> "value2old"])
                     let newValue = TestKeys.value2 ~>> "value2new"
                     
