@@ -11,7 +11,7 @@ import Foundation
 public protocol Key     : CustomStringConvertible { }
 
 public extension Key where Self : RawRepresentable {
-    var description : String {
+    public var description : String {
         return String(reflecting: self.dynamicType) + "." + "\(self.rawValue)"
     }
 }
