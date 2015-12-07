@@ -59,14 +59,18 @@ public extension Trackable {
 // -----------------------------
 // Setup functions
 public extension Trackable {
-    public func setupTrackableChain(trackedProperties: Set<TrackedProperty>, parrent: Trackable?) {
+    public func setupTrackableChain(trackedProperties: Set<TrackedProperty>, parent: Trackable?) {
         let parentLink: ChainLink
-
-        if let
-            identifier = parrent?.uniqueIdentifier,
-            link = ChainLink.responsibilityChainTable[identifier]
-        {
-            parentLink = link
+        
+        if let identifier = parent?.uniqueIdentifier {
+            if let link = ChainLink.responsibilityChainTable[identifier] {
+                // we have existing link for parent
+                parentLink = link
+            } else {
+                // we create new link for paret
+                weak var weakParent = parent
+                parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { weakParent?.trackedProperties } )
+            }
         } else {
             parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { return [] })
         }
