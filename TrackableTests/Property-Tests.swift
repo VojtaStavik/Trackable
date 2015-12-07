@@ -67,7 +67,34 @@ class PropertyTests : QuickSpec {
                         }
                     }
                 }
+            }
+            
+            it("should init with String") {
+                let testPropery = TestKeys.value1 ~>> "TestString"
+                expect(testPropery.value as? String).to(equal("TestString"))
+            }
 
+            it("should init with Int") {
+                let testPropery = TestKeys.value1 ~>> 5
+                expect(testPropery.value as? Int).to(equal(5))
+            }
+
+            it("should init with Double") {
+                let testPropery = TestKeys.value1 ~>> 5.63
+                expect(testPropery.value as? Double).to(equal(5.63))
+            }
+
+            it("should init with Bool") {
+                let testPropery = TestKeys.value1 ~>> true
+                expect(testPropery.value as? Bool).to(equal(true))
+            }
+            
+            it("should init with Dictionary") {
+                let testPropery = TestKeys.value1 ~>> ["test" : true, "test2" : 5, "test3" : 5.2, "test4" : "OK"]
+                expect((testPropery.value as? [String: AnyObject])?["test"] as? Bool).to(equal(true))
+                expect((testPropery.value as? [String: AnyObject])?["test2"] as? Int).to(equal(5))
+                expect((testPropery.value as? [String: AnyObject])?["test3"] as? Double).to(equal(5.2))
+                expect((testPropery.value as? [String: AnyObject])?["test4"] as? String).to(equal("OK"))
             }
         }
     }

@@ -11,15 +11,32 @@ import Foundation
 public struct TrackedProperty {
     public let key:     String
     public let value:   AnyObject
-    public init(key: Key, value: AnyObject) {
+    private init(key: Key, value: AnyObject) {
         self.key = key.description
         self.value = value
     }
 }
 
+
 infix operator ~>> { associativity left }
 
-public func ~>> (key: Key, value: AnyObject) -> TrackedProperty {
+public func ~>> (key: Key, value: String) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: Double) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: Int) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: Bool) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: [String : AnyObject]) -> TrackedProperty {
     return TrackedProperty(key: key, value: value)
 }
 
