@@ -17,6 +17,7 @@
 		A54798F51C14B17100E88D1C /* Chainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798F41C14B17100E88D1C /* Chainer.swift */; };
 		A54798F91C14B72200E88D1C /* Key-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798F81C14B72200E88D1C /* Key-Tests.swift */; };
 		A54798FB1C14C53300E88D1C /* Property-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798FA1C14C53300E88D1C /* Property-Tests.swift */; };
+		A54798FD1C15915400E88D1C /* Trackable-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798FC1C15915400E88D1C /* Trackable-Tests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		A54798F41C14B17100E88D1C /* Chainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chainer.swift; sourceTree = "<group>"; };
 		A54798F81C14B72200E88D1C /* Key-Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Key-Tests.swift"; sourceTree = "<group>"; };
 		A54798FA1C14C53300E88D1C /* Property-Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Property-Tests.swift"; sourceTree = "<group>"; };
+		A54798FC1C15915400E88D1C /* Trackable-Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Trackable-Tests.swift"; sourceTree = "<group>"; };
 		F08C512C395761AA74745D08 /* Pods-TrackableTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackableTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrackableTests/Pods-TrackableTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +117,7 @@
 				A54798E31C14A33D00E88D1C /* Info.plist */,
 				A54798F81C14B72200E88D1C /* Key-Tests.swift */,
 				A54798FA1C14C53300E88D1C /* Property-Tests.swift */,
+				A54798FC1C15915400E88D1C /* Trackable-Tests.swift */,
 			);
 			path = TrackableTests;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 			files = (
 				A54798FB1C14C53300E88D1C /* Property-Tests.swift in Sources */,
 				A54798F91C14B72200E88D1C /* Key-Tests.swift in Sources */,
+				A54798FD1C15915400E88D1C /* Trackable-Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
