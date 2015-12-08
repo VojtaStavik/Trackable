@@ -96,6 +96,14 @@ class PropertyTests : QuickSpec {
                 expect((testPropery.value as? [String: AnyObject])?["test3"] as? Double).to(equal(5.2))
                 expect((testPropery.value as? [String: AnyObject])?["test4"] as? String).to(equal("OK"))
             }
+
+            it("should convert self to dictionary") {
+                let testProperties : Set<TrackedProperty>= [TestKeys.value1 ~>> true, TestKeys.value2 ~>> "STP", TestKeys.value3 ~>> 5.66]
+                let dictionary = testProperties.dictionaryRepresentation
+                expect(dictionary["TrackableTests.PropertyTests.TestKeys.value1"] as? Bool).to(beTrue())
+                expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String).to(equal("STP"))
+                expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double).to(equal(5.66))
+            }
         }
     }
 }

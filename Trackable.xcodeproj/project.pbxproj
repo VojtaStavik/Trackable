@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		60DFCB2903F9267E48D48899 /* Pods_TrackableTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DC1BD131068ACF3B34F6642 /* Pods_TrackableTests.framework */; };
+		A5279C591C16DFF000BAD649 /* Chainer-Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5279C581C16DFF000BAD649 /* Chainer-Tests.swift */; };
 		A54798D61C14A33D00E88D1C /* Trackable.h in Headers */ = {isa = PBXBuildFile; fileRef = A54798D51C14A33D00E88D1C /* Trackable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A54798DD1C14A33D00E88D1C /* Trackable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A54798D21C14A33D00E88D1C /* Trackable.framework */; };
 		A54798ED1C14A53C00E88D1C /* Trackable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54798EC1C14A53C00E88D1C /* Trackable.swift */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		348440864DDC9A1672399B02 /* Pods-TrackableTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackableTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrackableTests/Pods-TrackableTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6DC1BD131068ACF3B34F6642 /* Pods_TrackableTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackableTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5279C581C16DFF000BAD649 /* Chainer-Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chainer-Tests.swift"; sourceTree = "<group>"; };
 		A54798D21C14A33D00E88D1C /* Trackable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Trackable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A54798D51C14A33D00E88D1C /* Trackable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Trackable.h; sourceTree = "<group>"; };
 		A54798D71C14A33D00E88D1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				A54798F81C14B72200E88D1C /* Key-Tests.swift */,
 				A54798FA1C14C53300E88D1C /* Property-Tests.swift */,
 				A54798FC1C15915400E88D1C /* Trackable-Tests.swift */,
+				A5279C581C16DFF000BAD649 /* Chainer-Tests.swift */,
 			);
 			path = TrackableTests;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5279C591C16DFF000BAD649 /* Chainer-Tests.swift in Sources */,
 				A54798FB1C14C53300E88D1C /* Property-Tests.swift in Sources */,
 				A54798F91C14B72200E88D1C /* Key-Tests.swift in Sources */,
 				A54798FD1C15915400E88D1C /* Trackable-Tests.swift in Sources */,

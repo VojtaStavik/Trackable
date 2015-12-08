@@ -11,7 +11,7 @@ import Foundation
 /**
 This function is called for the actual event tracking to remote service. Send data to servers here.
 */
-var trackEvent : ( (eventName: String, customInfo: [String: AnyObject]) -> Void )? = nil
+var trackEvent : ( (eventName: String, trackedProperties: [String: AnyObject]) -> Void )? = nil
 
 
 /*
@@ -50,7 +50,7 @@ public extension Trackable {
             ownLink.track(event, trackedProperties: properties)
         } else {
             // we don't have own link in the chain. Just track the event
-            trackEvent?(eventName: event.description, customInfo: properties.dictionaryRepresentation)
+            trackEvent?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
         }
     }
 }
@@ -60,7 +60,7 @@ public extension Trackable {
 // Setup functions
 public extension Trackable {
     public func setupTrackableChain(trackedProperties: Set<TrackedProperty>, parent: Trackable?) {
-        let parentLink: ChainLink
+        var parentLink: ChainLink? = nil
         
         if let identifier = parent?.uniqueIdentifier {
             if let link = ChainLink.responsibilityChainTable[identifier] {
@@ -70,11 +70,10 @@ public extension Trackable {
                 // we create new link for paret
                 weak var weakParent = parent
                 parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { weakParent?.trackedProperties } )
+                ChainLink.responsibilityChainTable[identifier] = parentLink
             }
-        } else {
-            parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { return [] })
         }
-
+        
         let newLink = ChainLink.Chainer(instanceProperties: trackedProperties, classProperties: { [weak self] in self?.trackedProperties }, parent: parentLink)
         ChainLink.responsibilityChainTable[self.uniqueIdentifier] = newLink
     }

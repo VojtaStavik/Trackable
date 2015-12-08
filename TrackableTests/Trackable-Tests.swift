@@ -44,12 +44,7 @@ class TrackableTests : QuickSpec {
                         let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier]!
                         
                         if case .Chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure , parent: let parrentLink) = link {
-                            expect(parrentLink).toNot(beNil())
-                            if case ChainLink.Tracker(instanceProperties: _, classProperties: _) = parrentLink! {
-                                expect(true)
-                            } else {
-                                fail()
-                            }
+                            expect(parrentLink).to(beNil())
                             expect(instanceProperties.count).to(equal(1))
                             expect(classPropertiesClosure()?.count).to(equal(2))
                         } else {
