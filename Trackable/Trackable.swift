@@ -40,16 +40,14 @@ public extension Trackable {
 // Track event functions
 public extension Trackable {
     public func track(event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
-        // update properties
-        var properties = self.trackedProperties
-        if let eventProperties = trackedProperties {
-            properties.updateValuesFrom(eventProperties)
-        }
-        
         if let ownLink = ChainLink.responsibilityChainTable[uniqueIdentifier] {
-            ownLink.track(event, trackedProperties: properties)
+            ownLink.track(event, trackedProperties: trackedProperties ?? [])
         } else {
-            // we don't have own link in the chain. Just track the event
+            // we don't have own link in the chain. Just update properties and track the event
+            var properties = self.trackedProperties
+            if let eventProperties = trackedProperties {
+                properties.updateValuesFrom(eventProperties)
+            }
             trackEvent?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
         }
     }

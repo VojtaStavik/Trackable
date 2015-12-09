@@ -167,9 +167,6 @@ class ChainerTests : QuickSpec {
                 expect(ChainLink.responsibilityChainTable[identifierB!]).to(beNil())
                 expect(ChainLink.responsibilityChainTable[identifierC!]).to(beNil())
             }
-
-            
         }
     }
-    
 }

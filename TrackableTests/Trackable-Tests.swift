@@ -13,6 +13,10 @@ import Nimble
 
 class TrackableTests : QuickSpec {
     
+    enum TestEvents : String, Event {
+        case Event1
+    }
+    
     enum TestKeys : String, Key {
         enum Tests : String, Key {
             case test1
@@ -22,13 +26,211 @@ class TrackableTests : QuickSpec {
     }
     
     override func spec() {
+        beforeEach {
+            trackEvent = nil
+            ChainLink.responsibilityChainTable = [ObjectIdentifier : ChainLink]()
+        }
+
         describe("Trackable") {
             it("object returns exmpty set by default") {
                 class TestClass : Trackable { }
                 let testClass = TestClass()
-                expect(testClass.trackedProperties.isEmpty)
+                expect(testClass.trackedProperties.isEmpty).to(beTrue())
             }
 
+            context("track") {
+                it("should track event") {
+                    class TestClass : Trackable {}
+                    let testClass = TestClass()
+                    
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.track(TestEvents.Event1)
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?.isEmpty).to(beTrue())
+                }
+
+                it("should track event properties") {
+                    class TestClass : Trackable {}
+                    let testClass = TestClass()
+                    
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.test1 ~>> "Hello", TestKeys.Tests.test2 ~>> true])
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? Bool).to(beTrue())
+                }
+
+                it("should append class properties to track event properties") {
+                    class TestClass : Trackable {
+                        var trackedProperties : Set<TrackedProperty> {
+                            return [TestKeys.test1 ~>> "Hello"]
+                        }
+                    }
+                    let testClass = TestClass()
+                    
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "World"])
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String).to(equal("World"))
+                }
+
+                it("should append instance properties to track event properties") {
+                    class TestClass : Trackable { }
+                    let testClass = TestClass()
+
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.setupTrackableChain([TestKeys.test1 ~>> "Hello"], parent: nil)
+                    testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "World"])
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String).to(equal("World"))
+                }
+            }
+            
+            context("instance properties") {
+                it("should override class properties") {
+                    class TestClass : Trackable {
+                        var trackedProperties : Set<TrackedProperty> {
+                            return [TestKeys.test1 ~>> "Hello"]
+                        }
+                    }
+                    let testClass = TestClass()
+                    
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.setupTrackableChain([TestKeys.test1 ~>> "World"], parent: nil)
+                    testClass.track(TestEvents.Event1)
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("World"))
+                }
+            }
+
+            context("event properties") {
+                it("should override class and instance properties") {
+                    class TestClass : Trackable {
+                        var trackedProperties : Set<TrackedProperty> {
+                            return [TestKeys.test1 ~>> "Hello"]
+                        }
+                    }
+                    let testClass = TestClass()
+                    
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.setupTrackableChain([TestKeys.test1 ~>> "World"], parent: nil)
+                    testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.test1 ~>> "Finally"])
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Finally"))
+                }
+            }
+
+            context("tracked properties of all types") {
+                it("should be tracked") {
+                    class TestClass : Trackable {
+                        var trackedProperties : Set<TrackedProperty> {
+                            return [TestKeys.test1 ~>> "Hello"]
+                        }
+                    }
+                    let testClass = TestClass()
+                    
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.setupTrackableChain([TestKeys.Tests.test1 ~>> "World"], parent: nil)
+                    testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "Finally"])
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
+                    expect(receivedProperties?[TestKeys.Tests.test1.description] as? String).to(equal("World"))
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String).to(equal("Finally"))
+                }
+                
+                it("should override parent's properties for the same keys") {
+                    class TestClassParent : Trackable {
+                        var trackedProperties : Set<TrackedProperty> {
+                            return [TestKeys.test1 ~>> "ParentHello"]
+                        }
+                    }
+                    
+                    class TestClass : Trackable {
+                        var trackedProperties : Set<TrackedProperty> {
+                            return [TestKeys.test1 ~>> "Hello"]
+                        }
+                    }
+
+                    let testClass = TestClass()
+                    let testClassParent = TestClassParent()
+                    
+                    testClass.setupTrackableChain([TestKeys.Tests.test1 ~>> "World"], parent: nil)
+                    testClassParent.setupTrackableChain([TestKeys.Tests.test1 ~>> "ParentWorld"], parent: testClass)
+
+                    var receivedEventName: String?
+                    var receivedProperties: [String: AnyObject]?
+                    
+                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                        receivedEventName = eventName
+                        receivedProperties = trackedProperties
+                    }
+                    
+                    testClass.track(TestEvents.Event1)
+                    
+                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
+                    expect(receivedProperties?[TestKeys.Tests.test1.description] as? String).to(equal("World"))
+                }
+            }
+            
             context("setupTrackableChain") {
                 context("creates chain link properly") {
                     it("when parent link is nil") {
