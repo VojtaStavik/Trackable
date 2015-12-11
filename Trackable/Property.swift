@@ -50,7 +50,11 @@ extension TrackedProperty : Hashable {
     public var hashValue : Int { return key.hash }
 }
 
-extension Set {
+// Small "hack" how to constraint Set extension to non-protocol type
+protocol TrackedPropertyProtocol { }
+extension TrackedProperty : TrackedPropertyProtocol { }
+
+extension Set where Element : TrackedPropertyProtocol {
     mutating func updateValuesFrom(properties: Set<TrackedProperty>) {
         var mutableSelf = self
         properties.flatMap { $0 as? Element}
