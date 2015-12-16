@@ -11,6 +11,13 @@ import Foundation
 import Quick
 import Nimble
 
+enum Beatles : String, Key {
+    case John
+    enum Info : String, Key {
+        case Age
+    }
+}
+
 class KeyTests : QuickSpec {
 
     enum TestKeys : String, Key {
@@ -29,6 +36,16 @@ class KeyTests : QuickSpec {
                     expect(TestKeys.Tests.test2.description).to(equal("TrackableTests.KeyTests.TestKeys.Tests.test2"))
                     expect(TestKeys.test1.description).to(equal("TrackableTests.KeyTests.TestKeys.test1"))
                 }
+            }
+        }
+        
+        describe("composeKeyWith") {
+            it("should merge key descriptions") {
+                let key1 = Beatles.John
+                let key2 = Beatles.Info.Age
+                let key3 = TestKeys.Tests.test1
+                expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
+                expect(key1.composeKeyWith(key3)).to(equal("TrackableTests.Beatles.John.KeyTests.TestKeys.Tests.test1"))
             }
         }
     }

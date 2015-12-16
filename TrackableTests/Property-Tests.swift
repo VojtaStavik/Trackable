@@ -17,6 +17,12 @@ class PropertyTests : QuickSpec {
         case value1
         case value2
         case value3
+        case value4
+        
+        enum Details : String, Key {
+            case detail1
+            case detail2
+        }
     }
 
     override func spec() {
@@ -89,20 +95,33 @@ class PropertyTests : QuickSpec {
                 expect(testPropery.value as? Bool).to(equal(true))
             }
             
-            it("should init with Dictionary") {
-                let testPropery = TestKeys.value1 ~>> ["test" : true, "test2" : 5, "test3" : 5.2, "test4" : "OK"]
-                expect((testPropery.value as? [String: AnyObject])?["test"] as? Bool).to(equal(true))
-                expect((testPropery.value as? [String: AnyObject])?["test2"] as? Int).to(equal(5))
-                expect((testPropery.value as? [String: AnyObject])?["test3"] as? Double).to(equal(5.2))
-                expect((testPropery.value as? [String: AnyObject])?["test4"] as? String).to(equal("OK"))
+            it("should init with Set of properties") {
+                let value : Set<TrackedProperty> = [TestKeys.Details.detail1 ~>> "detail1"]
+                let testProperty = TestKeys.value1 ~>> value
+                let testValue = testProperty.value as! Set<TrackedProperty>
+                testValue.forEach {
+                    switch $0.key {
+                    case "TrackableTests.PropertyTests.TestKeys.Details.detail1":
+                        expect( $0.value as? String).to(equal("detail1"))
+                    default:
+                        fail()
+                    }
+                }
             }
 
             it("should convert self to dictionary") {
-                let testProperties : Set<TrackedProperty>= [TestKeys.value1 ~>> true, TestKeys.value2 ~>> "STP", TestKeys.value3 ~>> 5.66]
+                let testProperties : Set<TrackedProperty>= [
+                    TestKeys.value1 ~>> true,
+                    TestKeys.value2 ~>> "STP",
+                    TestKeys.value3 ~>> 5.66,
+                    TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"]
+                ]
+                
                 let dictionary = testProperties.dictionaryRepresentation
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value1"] as? Bool).to(beTrue())
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String).to(equal("STP"))
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double).to(equal(5.66))
+                expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String).to(equal("detail"))
             }
         }
     }

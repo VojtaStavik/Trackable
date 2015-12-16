@@ -10,8 +10,8 @@ import Foundation
 
 public struct TrackedProperty {
     public let key:     String
-    public let value:   AnyObject
-    private init(key: Key, value: AnyObject) {
+    public let value:   Any
+    private init(key: Key, value: Any) {
         self.key = key.description
         self.value = value
     }
@@ -36,7 +36,7 @@ public func ~>> (key: Key, value: Bool) -> TrackedProperty {
     return TrackedProperty(key: key, value: value)
 }
 
-public func ~>> (key: Key, value: [String : AnyObject]) -> TrackedProperty {
+public func ~>> (key: Key, value: Set<TrackedProperty>) -> TrackedProperty {
     return TrackedProperty(key: key, value: value)
 }
 
@@ -63,11 +63,28 @@ extension Set where Element : TrackedPropertyProtocol {
     }
     
     var dictionaryRepresentation : [String : AnyObject] {
-        return self.flatMap { $0 as? TrackedProperty }
+        return self.flattenSet
                    .reduce([String: AnyObject]()) { result, element in
                         var updatedResult = result
-                        updatedResult[element.key] = element.value
+                        // we use flattenSet so we're sure that all values are AnyObject
+                        updatedResult[element.key] = (element.value as! AnyObject)
                         return updatedResult
                     }
+    }
+    
+    var flattenSet : Set<TrackedProperty> {
+        return reduce(Set<TrackedProperty>()) { (var result, property) -> Set<TrackedProperty> in
+            let property = property as! TrackedProperty
+            if let nestedSet = property.value as? Set<TrackedProperty> {
+                for nestedProperty in nestedSet.flattenSet {
+                    let key : Key = property.key
+                    let nestedKey : Key = nestedProperty.key
+                    result.insert(TrackedProperty(key: key.composeKeyWith(nestedKey), value: nestedProperty.value))
+                }
+            } else {
+                result.insert(property)
+            }
+            return result
+        }
     }
 }

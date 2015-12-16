@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol Event   : CustomStringConvertible { }
+public protocol Event : CustomStringConvertible { }
 
 public extension Event where Self : RawRepresentable {
     public var description : String {
