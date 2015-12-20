@@ -11,6 +11,6 @@ import Trackable
 
 extension Reachability : TrackableClass {
     public var trackedProperties : Set<TrackedProperty> {
-        return [Keys.reachabilityStatus ~>> currentReachabilityStatus.description]
+        return [Keys.App.reachabilityStatus ~>> currentReachabilityStatus.description]
     }
 }

@@ -40,8 +40,8 @@ class Analytics {
 
 extension Analytics : TrackableClass {
     var trackedProperties : Set<TrackedProperty> {
-        return [Keys.uptime ~>> NSDate().timeIntervalSinceDate(startTime)]
-                + (reachability?.trackedProperties ?? [Keys.reachabilityStatus ~>> "unknown"])
+        return [Keys.App.uptime ~>> NSDate().timeIntervalSinceDate(startTime)]
+                + (reachability?.trackedProperties ?? [Keys.App.reachabilityStatus ~>> "unknown"])
     }
 }
 
@@ -51,13 +51,23 @@ enum Events {
         case didSelectAlbum
         case didRateAlbum
     }
+    
+    enum App : String, Event {
+        case started
+        case didBecomeActive
+        case didEnterBackground
+        case terminated
+    }
 }
 
 enum Keys : String, Key {
     case beatleName
     case albumName
     case userLikesAlbum
-    case uptime
     case previousVC
-    case reachabilityStatus
+    
+    enum App : String, Key {
+        case uptime
+        case reachabilityStatus
+    }
 }
