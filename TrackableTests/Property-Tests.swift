@@ -129,5 +129,42 @@ class PropertyTests : QuickSpec {
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String).to(equal("detail"))
             }
         }
+        
+        it("should properly implement + for sets") {
+            let set1 : Set<TrackedProperty> = [
+                TestKeys.value1 ~>> true,
+                TestKeys.value2 ~>> "STP",
+            ]
+            
+            let set2 : Set<TrackedProperty> = [
+                TestKeys.value3 ~>> 5.66,
+                TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"]
+            ]
+            
+            let dictionary = (set1 + set2).dictionaryRepresentation
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value1"] as? Bool).to(beTrue())
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String).to(equal("STP"))
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double).to(equal(5.66))
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String).to(equal("detail"))
+        }
+        
+        it("should properly implement += for sets") {
+            var set1 : Set<TrackedProperty> = [
+                TestKeys.value1 ~>> true,
+                TestKeys.value2 ~>> "STP",
+            ]
+            
+            let set2 : Set<TrackedProperty> = [
+                TestKeys.value3 ~>> 5.66,
+                TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"]
+            ]
+            
+            set1 += set2
+            let dictionary = (set1).dictionaryRepresentation
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value1"] as? Bool).to(beTrue())
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String).to(equal("STP"))
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double).to(equal(5.66))
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String).to(equal("detail"))
+        }
     }
 }

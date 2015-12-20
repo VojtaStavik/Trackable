@@ -88,3 +88,13 @@ extension Set where Element : TrackedPropertyProtocol {
         }
     }
 }
+
+public func + (left: Set<TrackedProperty>, right: Set<TrackedProperty>) -> Set<TrackedProperty> {
+    var newLeft = left
+    newLeft.updateValuesFrom(right)
+    return newLeft
+}
+
+public func += (inout left: Set<TrackedProperty>, right: Set<TrackedProperty>) {
+    left = left + right
+}
