@@ -4,17 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Nimble.xcscheme_^#shared#^_</key>
+		<key>Mixpanel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-TrackableTests.xcscheme_^#shared#^_</key>
+		<key>Nimble.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Quick.xcscheme_^#shared#^_</key>
+		<key>Pods-TrackableExample.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TrackableTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Quick.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,12 +37,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8D5204D1DD14362A78787A28BC291EF2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C5DB5104FED3C10F78978AFC810982B9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>C6E43A1A5D3748413D139B39142CC031</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D306E1A19F57F62CC2320ED0D34FE3F8</key>
 		<dict>
 			<key>primary</key>
 			<true/>

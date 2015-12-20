@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>TrackableExample.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>A526FDDD1C270C3100159E75</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>A54798D11C14A33D00E88D1C</key>
 		<dict>
 			<key>primary</key>

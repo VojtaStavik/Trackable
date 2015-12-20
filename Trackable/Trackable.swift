@@ -55,7 +55,7 @@ public extension TrackableClass {
 // -----------------------------
 // Setup functions
 public extension TrackableClass {
-    public func setupTrackableChain(trackedProperties: Set<TrackedProperty>, parent: TrackableClass?) {
+    public func setupTrackableChain(trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
         var parentLink: ChainLink? = nil
         
         if let identifier = parent?.uniqueIdentifier {

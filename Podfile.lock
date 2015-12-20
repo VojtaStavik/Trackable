@@ -1,12 +1,17 @@
 PODS:
+  - Mixpanel (2.9.1):
+    - Mixpanel/Mixpanel (= 2.9.1)
+  - Mixpanel/Mixpanel (2.9.1)
   - Nimble (3.0.0)
   - Quick (0.8.0)
 
 DEPENDENCIES:
+  - Mixpanel
   - Nimble (= 3.0.0)
   - Quick (~> 0.8.0)
 
 SPEC CHECKSUMS:
+  Mixpanel: 5ca24b2a05f4c77fe9bcfe7671d681d0f3f8d76f
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
 
