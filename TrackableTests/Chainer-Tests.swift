@@ -27,7 +27,10 @@ class ChainerTests : QuickSpec {
     
     override func spec() {
         beforeEach {
-            trackEvent = nil
+            trackEventToRemoteServiceClosure = nil
+            keyPrefixToRemove = nil
+            eventPrefixToRemove = nil
+            
             ChainLink.responsibilityChainTable = [ObjectIdentifier : ChainLink]()
         }
         
@@ -40,7 +43,7 @@ class ChainerTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -58,7 +61,7 @@ class ChainerTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -79,7 +82,7 @@ class ChainerTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -100,7 +103,7 @@ class ChainerTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -122,7 +125,7 @@ class ChainerTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -137,9 +140,9 @@ class ChainerTests : QuickSpec {
             }
             
             it("should delete ChainLinks for released objects") {
-                class A : Trackable { }
-                class B : Trackable { }
-                class C : Trackable { }
+                class A : TrackableClass { }
+                class B : TrackableClass { }
+                class C : TrackableClass { }
                 
                 var identifierA : ObjectIdentifier?
                 var identifierB : ObjectIdentifier?

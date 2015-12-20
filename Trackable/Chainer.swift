@@ -21,7 +21,7 @@ extension ChainLink {
             properties.updateValuesFrom(instanceProperties)
             properties.updateValuesFrom(trackedProperties)
             
-            trackEvent?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
+            trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
             
         case .Chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure, parent: let parent):
             var properties = classPropertiesClosure() ?? Set<TrackedProperty>()
@@ -32,7 +32,7 @@ extension ChainLink {
                 parent.track(event, trackedProperties: properties)
             } else {
                 // parent was meanwhile released from memory, we just track the event
-                trackEvent?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
+                trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
             }
         }
     }

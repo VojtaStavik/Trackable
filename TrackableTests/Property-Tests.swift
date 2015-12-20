@@ -26,6 +26,11 @@ class PropertyTests : QuickSpec {
     }
 
     override func spec() {
+        beforeEach {
+            keyPrefixToRemove = nil
+            eventPrefixToRemove = nil
+        }
+        
         describe("Set of properties") {
             context("updateValueFrom") {
                 it("should add new value") {

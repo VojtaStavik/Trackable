@@ -27,26 +27,29 @@ class TrackableTests : QuickSpec {
     
     override func spec() {
         beforeEach {
-            trackEvent = nil
+            trackEventToRemoteServiceClosure = nil
+            keyPrefixToRemove = nil
+            eventPrefixToRemove = nil
+            
             ChainLink.responsibilityChainTable = [ObjectIdentifier : ChainLink]()
         }
 
         describe("Trackable") {
             it("object returns exmpty set by default") {
-                class TestClass : Trackable { }
+                class TestClass : TrackableClass { }
                 let testClass = TestClass()
                 expect(testClass.trackedProperties.isEmpty).to(beTrue())
             }
 
             context("track") {
                 it("should track event") {
-                    class TestClass : Trackable {}
+                    class TestClass : TrackableClass {}
                     let testClass = TestClass()
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -58,13 +61,13 @@ class TrackableTests : QuickSpec {
                 }
 
                 it("should track event properties") {
-                    class TestClass : Trackable {}
+                    class TestClass : TrackableClass {}
                     let testClass = TestClass()
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -77,7 +80,7 @@ class TrackableTests : QuickSpec {
                 }
 
                 it("should append class properties to track event properties") {
-                    class TestClass : Trackable {
+                    class TestClass : TrackableClass {
                         var trackedProperties : Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
@@ -87,7 +90,7 @@ class TrackableTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -100,13 +103,13 @@ class TrackableTests : QuickSpec {
                 }
 
                 it("should append instance properties to track event properties") {
-                    class TestClass : Trackable { }
+                    class TestClass : TrackableClass { }
                     let testClass = TestClass()
 
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -122,7 +125,7 @@ class TrackableTests : QuickSpec {
             
             context("instance properties") {
                 it("should override class properties") {
-                    class TestClass : Trackable {
+                    class TestClass : TrackableClass {
                         var trackedProperties : Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
@@ -132,7 +135,7 @@ class TrackableTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -147,7 +150,7 @@ class TrackableTests : QuickSpec {
 
             context("event properties") {
                 it("should override class and instance properties") {
-                    class TestClass : Trackable {
+                    class TestClass : TrackableClass {
                         var trackedProperties : Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
@@ -157,7 +160,7 @@ class TrackableTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -172,7 +175,7 @@ class TrackableTests : QuickSpec {
 
             context("tracked properties of all types") {
                 it("should be tracked") {
-                    class TestClass : Trackable {
+                    class TestClass : TrackableClass {
                         var trackedProperties : Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
@@ -182,7 +185,7 @@ class TrackableTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -197,13 +200,13 @@ class TrackableTests : QuickSpec {
                 }
                 
                 it("should override parent's properties for the same keys") {
-                    class TestClassParent : Trackable {
+                    class TestClassParent : TrackableClass {
                         var trackedProperties : Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "ParentHello"]
                         }
                     }
                     
-                    class TestClass : Trackable {
+                    class TestClass : TrackableClass {
                         var trackedProperties : Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
@@ -218,7 +221,7 @@ class TrackableTests : QuickSpec {
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
                     
-                    trackEvent = { (eventName: String, trackedProperties: [String: AnyObject]) in
+                    trackEventToRemoteServiceClosure = { (eventName: String, trackedProperties: [String: AnyObject]) in
                         receivedEventName = eventName
                         receivedProperties = trackedProperties
                     }
@@ -234,7 +237,7 @@ class TrackableTests : QuickSpec {
             context("setupTrackableChain") {
                 context("creates chain link properly") {
                     it("when parent link is nil") {
-                        class TestClass : Trackable {
+                        class TestClass : TrackableClass {
                             var trackedProperties : Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "test1" ,TestKeys.Tests.test2 ~>> true]
                             }
@@ -255,13 +258,13 @@ class TrackableTests : QuickSpec {
                     }
                     
                     it("with parent link") {
-                        class TestClass : Trackable {
+                        class TestClass : TrackableClass {
                             var trackedProperties : Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "test1" ,TestKeys.Tests.test2 ~>> true]
                             }
                         }
 
-                        class TestClass2 : Trackable {
+                        class TestClass2 : TrackableClass {
                             var trackedProperties : Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> true]
                             }

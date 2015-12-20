@@ -10,9 +10,22 @@ import Foundation
 
 public protocol Key : CustomStringConvertible { }
 
+/**
+Specify a prefix which sould be removed from all keys. Usually you use this to remove project or module name.
+*/
+public var keyPrefixToRemove : String? = nil
+
 public extension Key where Self : RawRepresentable {
     public var description : String {
-        return String(reflecting: self.dynamicType) + "." + "\(self.rawValue)"
+        var rawDescription = String(reflecting: self.dynamicType) + "." + "\(self.rawValue)"
+        if let
+            prefixToRemove = keyPrefixToRemove,
+            range = rawDescription.rangeOfString(prefixToRemove)
+        {
+            rawDescription.removeRange(range)
+        }
+        
+        return rawDescription
     }
 }
 

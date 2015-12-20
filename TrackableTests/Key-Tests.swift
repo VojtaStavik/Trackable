@@ -29,6 +29,11 @@ class KeyTests : QuickSpec {
     }
     
     override func spec() {
+        beforeEach {
+            keyPrefixToRemove = nil
+            eventPrefixToRemove = nil
+        }
+        
         describe("Key") {
             context("description") {
                 it("should be generated based on namespace structure") {
@@ -46,6 +51,19 @@ class KeyTests : QuickSpec {
                 let key3 = TestKeys.Tests.test1
                 expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
                 expect(key1.composeKeyWith(key3)).to(equal("TrackableTests.Beatles.John.KeyTests.TestKeys.Tests.test1"))
+            }
+        }
+        
+        describe("keyPrefixToRemove") {
+            context("when presented") {
+                it("should be removed from key description") {
+                    keyPrefixToRemove = "TrackableTests."
+                    let key1 = Beatles.John
+                    let key2 = Beatles.Info.Age
+                    let key3 = TestKeys.Tests.test1
+                    expect(key1.composeKeyWith(key2)).to(equal("Beatles.John.Info.Age"))
+                    expect(key1.composeKeyWith(key3)).to(equal("Beatles.John.KeyTests.TestKeys.Tests.test1"))
+                }
             }
         }
     }

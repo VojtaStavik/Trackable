@@ -11,8 +11,7 @@ import Foundation
 /**
 This function is called for the actual event tracking to remote service. Send data to servers here.
 */
-var trackEvent : ( (eventName: String, trackedProperties: [String: AnyObject]) -> Void )? = nil
-
+public var trackEventToRemoteServiceClosure : ( (eventName: String, trackedProperties: [String: AnyObject]) -> Void )? = nil
 
 /*
     Three levels of trackable properties:
@@ -24,21 +23,20 @@ var trackEvent : ( (eventName: String, trackedProperties: [String: AnyObject]) -
     Higher level property overrides lower level property with the same name.
 */
 
-
-public protocol Trackable : class {
+public protocol TrackableClass : class {
     var trackedProperties: Set<TrackedProperty> { get }
 }
 
 // Default implementation of Trackable. We don't want to return nil
 // as a default value, because we use nil internaly to identify released objects
-public extension Trackable {
+public extension TrackableClass {
     var trackedProperties: Set<TrackedProperty> { return [] }
 }
 
 
 // -----------------------------
 // Track event functions
-public extension Trackable {
+public extension TrackableClass {
     public func track(event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
         if let ownLink = ChainLink.responsibilityChainTable[uniqueIdentifier] {
             ownLink.track(event, trackedProperties: trackedProperties ?? [])
@@ -48,7 +46,7 @@ public extension Trackable {
             if let eventProperties = trackedProperties {
                 properties.updateValuesFrom(eventProperties)
             }
-            trackEvent?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
+            trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
         }
     }
 }
@@ -56,8 +54,8 @@ public extension Trackable {
 
 // -----------------------------
 // Setup functions
-public extension Trackable {
-    public func setupTrackableChain(trackedProperties: Set<TrackedProperty>, parent: Trackable?) {
+public extension TrackableClass {
+    public func setupTrackableChain(trackedProperties: Set<TrackedProperty>, parent: TrackableClass?) {
         var parentLink: ChainLink? = nil
         
         if let identifier = parent?.uniqueIdentifier {
@@ -77,7 +75,7 @@ public extension Trackable {
     }
 }
 
-extension Trackable {
+extension TrackableClass {
     var uniqueIdentifier : ObjectIdentifier {
         return ObjectIdentifier(self)
     }
