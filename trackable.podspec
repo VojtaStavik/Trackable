@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Trackable'
-  s.version = '0.1'
+  s.version = '0.2'
   s.license = 'MIT'
   s.homepage = 'https://github.com/VojtaStavik/Trackable'
   s.social_media_url = 'http://twitter.com/VojtaStavik'
