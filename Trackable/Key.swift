@@ -11,11 +11,14 @@ import Foundation
 public protocol Key : CustomStringConvertible { }
 
 /**
-Specify a prefix which sould be removed from all keys. Usually you use this to remove project or module name.
+    Specify a prefix which sould be removed from all keys. Usually you use this to remove project or module name.
 */
 public var keyPrefixToRemove : String? = nil
 
 public extension Key where Self : RawRepresentable {
+    /**
+        String representation of Event object.
+     */
     public var description : String {
         var rawDescription = String(reflecting: self.dynamicType) + "." + "\(self.rawValue)"
         if let
@@ -30,6 +33,9 @@ public extension Key where Self : RawRepresentable {
 }
 
 public extension Key {
+    /**
+        Removes common prefix for both keys
+     */
     func composeKeyWith(key: Key) -> String {
         let myKey = description
         let otherKey = key.description

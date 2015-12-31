@@ -7,7 +7,10 @@
 //
 
 import Foundation
-
+/**
+    Struct which encapsulates property Key and its value. It can be created using ~>> operator. 
+    Example: let property = Key ~>> Value
+ */
 public struct TrackedProperty {
     public let key:     String
     public let value:   Any

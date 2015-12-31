@@ -9,7 +9,9 @@
 import Foundation
 
 /**
-This function is called for the actual event tracking to remote service. Send data to servers here.
+    This function is called for the actual event tracking to remote service. Send data to remote servers here.
+    - parameter eventName: Event identifier
+    - parameter trackedProperties: Event properties
 */
 public var trackEventToRemoteServiceClosure : ( (eventName: String, trackedProperties: [String: AnyObject]) -> Void )? = nil
 
@@ -23,6 +25,9 @@ public var trackEventToRemoteServiceClosure : ( (eventName: String, trackedPrope
     Higher level property overrides lower level property with the same name.
 */
 
+/**
+    Conformance to this protocol allow a class to track events on *self*
+*/
 public protocol TrackableClass : class {
     var trackedProperties: Set<TrackedProperty> { get }
 }
@@ -37,6 +42,11 @@ public extension TrackableClass {
 // -----------------------------
 // Track event functions
 public extension TrackableClass {
+    /**
+        Track event on *self* with properties.
+        - parameter event: Event identifier
+        - parameter trackedProperties: Properties added to the event
+     */
     public func track(event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
         if let ownLink = ChainLink.responsibilityChainTable[uniqueIdentifier] {
             ownLink.track(event, trackedProperties: trackedProperties ?? [])
@@ -55,6 +65,11 @@ public extension TrackableClass {
 // -----------------------------
 // Setup functions
 public extension TrackableClass {
+    /**
+        Setup self so it can be used in trackable chain.
+        - parameter trackedProperties: Properties which will be added to all events tracked on self
+        - parameter parent: Trackable parent for self. Events are not tracked directly but they are resend to parent.
+     */
     public func setupTrackableChain(trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
         var parentLink: ChainLink? = nil
         
