@@ -24,7 +24,7 @@ class Analytics {
         Trackable.eventPrefixToRemove = "TrackableExample.Events."
         Trackable.keyPrefixToRemove = "TrackableExample.Keys."
 
-        setupTrackableChain()
+        setupTrackableChain() // allows self to be part of the trackable chain
     }
     
     func trackEventToMixpanel(eventName: String, trackedProperties: [String: AnyObject]) {
@@ -58,6 +58,10 @@ enum Events {
         case didEnterBackground
         case terminated
     }
+    
+    enum AlbumListVC : String, Event {
+        case didAppear
+    }
 }
 
 enum Keys : String, Key {
@@ -69,5 +73,6 @@ enum Keys : String, Key {
     enum App : String, Key {
         case uptime
         case reachabilityStatus
+        case launchTime
     }
 }

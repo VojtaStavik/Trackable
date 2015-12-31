@@ -29,7 +29,6 @@ class AlbumListTVC: UITableViewController {
     }
     
     // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destinationVC = segue.destinationViewController as! AlbumDetailVC
         let selectedAlbum = albums[tableView.indexPathForSelectedRow!.row]
@@ -38,15 +37,18 @@ class AlbumListTVC: UITableViewController {
         
         destinationVC.setupTrackableChain([Keys.previousVC ~>> "Album list"], parent: self)
     }
+    
+    var selectedAlbum : Album? {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            return albums[indexPath.row]
+        } else {
+            return nil
+        }
+    }
 }
 
 extension AlbumListTVC : TrackableClass {
     var trackedProperties : Set<TrackedProperty> {
-        var selectedAlbum : Album?
-        if let indexPath = tableView.indexPathForSelectedRow {
-            selectedAlbum = albums[indexPath.row]
-        }
-        
         return [Keys.albumName ~>> selectedAlbum?.name ?? "none"]
     }
 }

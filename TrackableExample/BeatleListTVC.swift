@@ -17,6 +17,11 @@ class BeatleListTVC: UITableViewController {
         super.viewDidLoad()
         setupTrackableChain([], parent: analytics)
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        track(Events.AlbumListVC.didAppear)
+    }
 
     // MARK: - Table view data source
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -34,7 +39,6 @@ class BeatleListTVC: UITableViewController {
     }
     
     // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destinationVC = segue.destinationViewController as! AlbumListTVC
         let selectedBeatle = beatles[tableView.indexPathForSelectedRow!.row]
