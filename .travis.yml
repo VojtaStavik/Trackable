@@ -5,7 +5,7 @@ before_install:
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 
 script: 
-  - xcodebuild -scheme Trackable -workspace Trackable.xcworkspace -enableCodeCoverage YES -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6S,OS=9.1' build test | xcpretty
+  - set -o pipefail && xcodebuild -scheme Trackable -workspace Trackable.xcworkspace -enableCodeCoverage YES -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6S,OS=9.1' build test | xcpretty
 
 after_success:
     bash <(curl -s https://codecov.io/bash);
