@@ -1,4 +1,5 @@
 #! /bin/bash
+set -ev
 
 TEST_CMD="xcodebuild -scheme Trackable -workspace Trackable.xcworkspace -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6S,OS=9.1' build test"
 
