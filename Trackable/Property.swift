@@ -54,18 +54,18 @@ extension TrackedProperty : Hashable {
 }
 
 // Small "hack" how to constraint Set extension to a non-protocol type
-protocol TrackedPropertyProtocol { }
+public protocol TrackedPropertyProtocol { }
 extension TrackedProperty : TrackedPropertyProtocol { }
 
-extension Set where Element : TrackedPropertyProtocol {
-    mutating func updateValuesFrom(properties: Set<TrackedProperty>) {
+public extension Set where Element : TrackedPropertyProtocol {
+    public mutating func updateValuesFrom(properties: Set<TrackedProperty>) {
         var mutableSelf = self
         properties.flatMap { $0 as? Element}
                   .forEach { mutableSelf.insert($0) }
         self = mutableSelf
     }
     
-    var dictionaryRepresentation : [String : AnyObject] {
+    public var dictionaryRepresentation : [String : AnyObject] {
         return self.flattenSet
                    .reduce([String: AnyObject]()) { result, element in
                         var updatedResult = result
@@ -75,7 +75,7 @@ extension Set where Element : TrackedPropertyProtocol {
                     }
     }
     
-    var flattenSet : Set<TrackedProperty> {
+    public var flattenSet : Set<TrackedProperty> {
         return reduce(Set<TrackedProperty>()) { (var result, property) -> Set<TrackedProperty> in
             let property = property as! TrackedProperty
             if let nestedSet = property.value as? Set<TrackedProperty> {
