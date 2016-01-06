@@ -153,8 +153,8 @@ class ChainerTests : QuickSpec {
                     let classB = B()
                     let classC = C()
                     
-                    classA.setupTrackableChain([], parent: classC)
-                    classB.setupTrackableChain([], parent: classA)
+                    classA.setupTrackableChain(trackedProperties: [], parent: classC)
+                    classB.setupTrackableChain(trackedProperties: [], parent: classA)
                     
                     identifierA = ObjectIdentifier(classA)
                     identifierB = ObjectIdentifier(classB)

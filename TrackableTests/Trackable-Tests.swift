@@ -114,7 +114,7 @@ class TrackableTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    testClass.setupTrackableChain([TestKeys.test1 ~>> "Hello"], parent: nil)
+                    testClass.setupTrackableChain(trackedProperties: [TestKeys.test1 ~>> "Hello"], parent: nil)
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "World"])
                     
                     expect(receivedEventName).to(equal(TestEvents.Event1.description))
@@ -140,7 +140,7 @@ class TrackableTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    testClass.setupTrackableChain([TestKeys.test1 ~>> "World"], parent: nil)
+                    testClass.setupTrackableChain(trackedProperties: [TestKeys.test1 ~>> "World"], parent: nil)
                     testClass.track(TestEvents.Event1)
                     
                     expect(receivedEventName).to(equal(TestEvents.Event1.description))
@@ -165,7 +165,7 @@ class TrackableTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    testClass.setupTrackableChain([TestKeys.test1 ~>> "World"], parent: nil)
+                    testClass.setupTrackableChain(trackedProperties: [TestKeys.test1 ~>> "World"], parent: nil)
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.test1 ~>> "Finally"])
                     
                     expect(receivedEventName).to(equal(TestEvents.Event1.description))
@@ -190,7 +190,7 @@ class TrackableTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    testClass.setupTrackableChain([TestKeys.Tests.test1 ~>> "World"], parent: nil)
+                    testClass.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> "World"], parent: nil)
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "Finally"])
                     
                     expect(receivedEventName).to(equal(TestEvents.Event1.description))
@@ -215,8 +215,8 @@ class TrackableTests : QuickSpec {
                     let testClass = TestClass()
                     let testClassParent = TestClassParent()
                     
-                    testClass.setupTrackableChain([TestKeys.Tests.test1 ~>> "World"], parent: nil)
-                    testClassParent.setupTrackableChain([TestKeys.Tests.test1 ~>> "ParentWorld"], parent: testClass)
+                    testClass.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> "World"], parent: nil)
+                    testClassParent.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> "ParentWorld"], parent: testClass)
 
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
@@ -244,7 +244,7 @@ class TrackableTests : QuickSpec {
                         }
                         
                         let testClass = TestClass()
-                        testClass.setupTrackableChain([TestKeys.Tests.test1 ~>> 5], parent: nil)
+                        testClass.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> 5], parent: nil)
                         
                         let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier]!
                         
@@ -271,10 +271,10 @@ class TrackableTests : QuickSpec {
                         }
                         
                         let testClass = TestClass()
-                        testClass.setupTrackableChain([TestKeys.Tests.test1 ~>> 5], parent: nil)
+                        testClass.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> 5], parent: nil)
 
                         let testClass2 = TestClass2()
-                        testClass.setupTrackableChain([], parent: testClass2)
+                        testClass.setupTrackableChain(trackedProperties: [], parent: testClass2)
                         let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier]!
                         
                         if case .Chainer(instanceProperties: _ , classProperties: _ , parent: let parrentLink) = link {
