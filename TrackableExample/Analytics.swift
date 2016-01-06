@@ -28,17 +28,21 @@ class Analytics {
     }
     
     func trackEventToMixpanel(eventName: String, trackedProperties: [String: AnyObject]) {
-        // we want to print arguments in alphabetical order
+        mixpanel.track(eventName, properties: trackedProperties)
+        
+        // We want to also print the event and arguments to console.
+        // (arguments will be in alphabetical order)
         let listOfArguments = trackedProperties.sort({ $0.0 < $1.0 }).reduce("") { (finalString, element) -> String in
             return finalString + "   -\(element.0):  \(element.1)\n"
         }
         print("\n---------------------------- \nEvent: \(eventName)\n\(listOfArguments)--------------")
-        
-        mixpanel.track(eventName, properties: trackedProperties)
     }
 }
 
 extension Analytics : TrackableClass {
+    // Since the analytics object is a parent for all other TrackableClasses in the project,
+    // these properties will be added to all events.
+    // Notice the + operator. You can use it for merging sets of TrackedProperty: Set<TrackedProperty> + Set<TrackedProperty>
     var trackedProperties : Set<TrackedProperty> {
         return [Keys.App.uptime ~>> NSDate().timeIntervalSinceDate(startTime)]
                 + (reachability?.trackedProperties ?? [Keys.App.reachabilityStatus ~>> "unknown"])

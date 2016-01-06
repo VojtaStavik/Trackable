@@ -11,7 +11,7 @@ import Foundation
 public protocol Event : CustomStringConvertible { }
 
 /**
-    Specify a prefix which sould be removed from all event names. Usually you use this to remove project or module name.
+    Specify a prefix which sould be removed from all event names. Usually you use this to remove project and/or module name.
 */
 public var eventPrefixToRemove : String? = nil
 

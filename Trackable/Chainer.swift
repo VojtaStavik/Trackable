@@ -42,7 +42,7 @@ extension ChainLink {
     static var responsibilityChainTable = [ObjectIdentifier : ChainLink]()
     
     /*
-    Remove released objects from the chain table and returens removed chainers
+    Remove released objects from the chain table and returns removed chainers
     */
     static internal func cleanupResponsibilityChainTable() -> [ChainLink] {
         var deletedChainers : [ChainLink] = []

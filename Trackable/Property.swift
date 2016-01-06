@@ -53,7 +53,7 @@ extension TrackedProperty : Hashable {
     public var hashValue : Int { return key.hash }
 }
 
-// Small "hack" how to constraint Set extension to non-protocol type
+// Small "hack" how to constraint Set extension to a non-protocol type
 protocol TrackedPropertyProtocol { }
 extension TrackedProperty : TrackedPropertyProtocol { }
 

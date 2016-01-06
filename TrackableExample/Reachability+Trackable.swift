@@ -9,7 +9,7 @@
 import Foundation
 import Trackable
 
-// Need to include data from 3rd party classes?  Just make a TrackableClass extension and return them there!
+// Do you need to include data from 3rd party classes?  Just make a TrackableClass extension and return them in trackedProperties!
 
 extension Reachability : TrackableClass {
     public var trackedProperties : Set<TrackedProperty> {

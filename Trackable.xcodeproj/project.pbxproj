@@ -141,7 +141,7 @@
 		A526FDDF1C270C3100159E75 /* TrackableExample */ = {
 			isa = PBXGroup;
 			children = (
-				A526FE031C2721A200159E75 /* Reachability.swift */,
+				A55AE0071C3D1B39009066C7 /* External */,
 				A526FE051C2721D400159E75 /* Reachability+Trackable.swift */,
 				A526FDFC1C2714EA00159E75 /* Analytics.swift */,
 				A526FDF21C270CE700159E75 /* Model+Data.swift */,
@@ -202,6 +202,14 @@
 				A526FDB41C26CCAE00159E75 /* Event-Tests.swift */,
 			);
 			path = TrackableTests;
+			sourceTree = "<group>";
+		};
+		A55AE0071C3D1B39009066C7 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				A526FE031C2721A200159E75 /* Reachability.swift */,
+			);
+			name = External;
 			sourceTree = "<group>";
 		};
 		B00AD83839840FF7A4E084DC /* Pods */ = {

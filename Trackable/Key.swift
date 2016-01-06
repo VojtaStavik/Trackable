@@ -11,7 +11,7 @@ import Foundation
 public protocol Key : CustomStringConvertible { }
 
 /**
-    Specify a prefix which sould be removed from all keys. Usually you use this to remove project or module name.
+    Specify a prefix which sould be removed from all keys. Usually you use this to remove project and/or module name.
 */
 public var keyPrefixToRemove : String? = nil
 
