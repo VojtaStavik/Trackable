@@ -35,7 +35,7 @@ class AlbumListTVC: UITableViewController {
         
         destinationVC.title = selectedAlbum.name
         
-        destinationVC.setupTrackableChain([Keys.previousVC ~>> "Album list"], parent: self)
+        destinationVC.setupTrackableChain(trackedProperties: [Keys.previousVC ~>> "Album list"], parent: self)
     }
     
     var selectedAlbum : Album? {

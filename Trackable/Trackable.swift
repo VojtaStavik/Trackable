@@ -9,7 +9,7 @@
 import Foundation
 
 /**
-    This function is called for the actual event tracking to remote service. Send data to remote servers here.
+    This function is called for the actual event tracking to remote services. Send data to remote servers here.
     - parameter eventName: Event identifier
     - parameter trackedProperties: Event properties
 */
@@ -18,9 +18,9 @@ public var trackEventToRemoteServiceClosure : ( (eventName: String, trackedPrope
 /*
     Three levels of trackable properties:
     -----------------------------------------
-    1. low - on the class level -> by implementing trackableProperties computed variable
-    2. middle - on the instance level -> by calling addToTrackableProperties(properties, parent: Trackable?) on the instance
     3. high - on the event level -> by adding properties to trackEvent function
+    2. middle - on the instance level -> by calling setupTrackableChain(properties, parent: Trackable?) on the instance
+    1. low - on the class level -> by implementing trackableProperties computed variable
 
     Higher level property overrides lower level property with the same name.
 */
@@ -66,11 +66,11 @@ public extension TrackableClass {
 // Setup functions
 public extension TrackableClass {
     /**
-        Setup self so it can be used in trackable chain.
+        Setup *self* so it can be used as a part of a trackable chain.
         - parameter trackedProperties: Properties which will be added to all events tracked on self
-        - parameter parent: Trackable parent for self. Events are not tracked directly but they are resend to parent.
+        - parameter parent: Trackable parent for *self*. Events are not tracked directly but they are resend to parent.
      */
-    public func setupTrackableChain(trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
+    public func setupTrackableChain(trackedProperties trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
         var parentLink: ChainLink? = nil
         
         if let identifier = parent?.uniqueIdentifier {

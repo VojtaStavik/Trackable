@@ -15,7 +15,7 @@ class BeatleListTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTrackableChain([], parent: analytics)
+        setupTrackableChain(parent: analytics)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -46,7 +46,7 @@ class BeatleListTVC: UITableViewController {
         destinationVC.title = selectedBeatle.name + "'s albums"
         destinationVC.albums = selectedBeatle.albums
         
-        destinationVC.setupTrackableChain([Keys.previousVC ~>> "Beatle list"], parent: self)
+        destinationVC.setupTrackableChain(trackedProperties: [Keys.previousVC ~>> "Beatle list"], parent: self)
     }
 }
 
@@ -56,7 +56,6 @@ extension BeatleListTVC : TrackableClass {
         if let indexPath = tableView.indexPathForSelectedRow {
             selectedBeatle = beatles[indexPath.row]
         }
-        
         return [Keys.beatleName ~>> selectedBeatle?.name ?? "none"]
     }
 }
