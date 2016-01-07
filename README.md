@@ -144,7 +144,7 @@ track(Events.User.didRateAlbum, trackedProperties: [Keys.userLikesAlbum ~>> user
 ```
 
 #### Level 2
--	instance properties added by calling setupTrackableChain(trackedProperties:) on a TrackableClass instance.
+-	instance properties added by calling ```setupTrackableChain(trackedProperties:)``` on a ```TrackableClass``` instance.
 -	these properties will be added to all events tracked on the object
 -	**Typical usage:** When you want to set properties from the outside of the object (the object doesn’t know about them)
 
@@ -169,7 +169,7 @@ extension AlbumListTVC : TrackableClass { }
 
 
 #### Level 1
--	computed properties added by custom implementation of the TrackableClass protocol
+-	computed properties added by custom implementation of the ```TrackableClass``` protocol
 -	these properties will be added to all events tracked on the object
 -	**Typical usage:** When you want to add some set of properties to all events tracked on the object.
 
