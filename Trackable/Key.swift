@@ -15,6 +15,11 @@ public protocol Key : CustomStringConvertible { }
 */
 public var keyPrefixToRemove : String? = nil
 
+/**
+    
+*/
+public var smartKeyComposingEnabled = true
+
 public extension Key where Self : RawRepresentable {
     /**
         String representation of Event object.
@@ -37,6 +42,10 @@ public extension Key {
         Removes common prefix for both keys
      */
     func composeKeyWith(key: Key) -> String {
+        guard smartKeyComposingEnabled else {
+            return description + "." + key.description
+        }
+        
         let myKey = description
         let otherKey = key.description
         
@@ -50,7 +59,28 @@ public extension Key {
             }
         }
         
-        return finalKey
+        let keyWithoutRepeatingParts = removeRepeatingParts(finalKey)
+        return keyWithoutRepeatingParts
+    }
+    
+    /**
+        Removes repeating parts of the key
+     */
+    func removeRepeatingParts(keyDescription: String) -> String {
+        let separator = "."
+        let elements = keyDescription.componentsSeparatedByString(separator)
+        
+        if let first = elements.first {
+            return elements.reduce(first, combine: { (result, element) -> String in
+                if result.componentsSeparatedByString(separator).last == element {
+                    return result
+                } else {
+                    return result + "." + element
+                }
+            })
+        } else {
+            return keyDescription
+        }
     }
 }
 

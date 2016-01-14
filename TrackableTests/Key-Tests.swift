@@ -18,6 +18,10 @@ enum Beatles : String, Key {
     }
 }
 
+enum John: String, Key {
+    case Age
+}
+
 class KeyTests : QuickSpec {
 
     enum TestKeys : String, Key {
@@ -32,6 +36,7 @@ class KeyTests : QuickSpec {
         beforeEach {
             keyPrefixToRemove = nil
             eventPrefixToRemove = nil
+            smartKeyComposingEnabled = true
         }
         
         describe("Key") {
@@ -45,19 +50,52 @@ class KeyTests : QuickSpec {
         }
         
         describe("composeKeyWith") {
-            it("should merge key descriptions") {
-                let key1 = Beatles.John
-                let key2 = Beatles.Info.Age
-                let key3 = TestKeys.Tests.test1
-                expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
-                expect(key1.composeKeyWith(key3)).to(equal("TrackableTests.Beatles.John.KeyTests.TestKeys.Tests.test1"))
+            
+            let key1 = Beatles.John
+            let key2 = Beatles.Info.Age
+            let key3 = TestKeys.Tests.test1
+            
+            context("when smartKeyComposingEnabled is enabled") {
+                beforeEach {
+                    smartKeyComposingEnabled = true
+                }
+
+                it("should merge key descriptions") {
+                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
+                    expect(key1.composeKeyWith(key3)).to(equal("TrackableTests.Beatles.John.KeyTests.TestKeys.Tests.test1"))
+                }
+
+                it("should remove repeating elements from key descriptions") {
+                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
+                }
+            }
+
+            context("when smartKeyComposingEnabled is disabled") {
+                beforeEach {
+                    smartKeyComposingEnabled = false
+                }
+                
+                it("should not merge key descriptions") {
+                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.TrackableTests.Beatles.Info.Age"))
+                }
+                
+                it("should not remove repeating elements from key descriptions") {
+                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.TrackableTests.Beatles.Info.Age"))
+                }
             }
         }
         
         describe("keyPrefixToRemove") {
             context("when presented") {
-                it("should be removed from key description") {
+                beforeEach {
                     keyPrefixToRemove = "TrackableTests."
+                }
+                
+                afterEach {
+                    keyPrefixToRemove = nil
+                }
+                
+                it("should be removed from key description") {
                     let key1 = Beatles.John
                     let key2 = Beatles.Info.Age
                     let key3 = TestKeys.Tests.test1
