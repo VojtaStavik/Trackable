@@ -48,16 +48,27 @@ public extension TrackableClass {
         - parameter trackedProperties: Properties added to the event
      */
     public func track(event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
-        if let ownLink = ChainLink.responsibilityChainTable[uniqueIdentifier] {
-            ownLink.track(event, trackedProperties: trackedProperties ?? [])
-        } else {
-            // we don't have own link in the chain. Just update properties and track the event
-            var properties = self.trackedProperties
-            if let eventProperties = trackedProperties {
-                properties.updateValuesFrom(eventProperties)
+        let trackClosure: () -> Void = {
+            if let ownLink = ChainLink.responsibilityChainTable[self.uniqueIdentifier] {
+                ownLink.track(event, trackedProperties: trackedProperties ?? [])
+            } else {
+                // we don't have own link in the chain. Just update properties and track the event
+                var properties = self.trackedProperties
+                if let eventProperties = trackedProperties {
+                    properties.updateValuesFrom(eventProperties)
+                }
+                trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
             }
-            trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
         }
+        
+        if NSThread.isMainThread() {
+            trackClosure()
+        } else {
+            dispatch_async(dispatch_get_main_queue()) {
+                trackClosure()
+            }
+        }
+
     }
 }
 
@@ -71,22 +82,33 @@ public extension TrackableClass {
         - parameter parent: Trackable parent for *self*. Events are not tracked directly but they are resend to parent.
      */
     public func setupTrackableChain(trackedProperties trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
-        var parentLink: ChainLink? = nil
-        
-        if let identifier = parent?.uniqueIdentifier {
-            if let link = ChainLink.responsibilityChainTable[identifier] {
-                // we have existing link for parent
-                parentLink = link
-            } else {
-                // we create new link for paret
-                weak var weakParent = parent
-                parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { weakParent?.trackedProperties } )
-                ChainLink.responsibilityChainTable[identifier] = parentLink
+
+        let setupClosure: () -> Void = {
+            var parentLink: ChainLink? = nil
+            
+            if let identifier = parent?.uniqueIdentifier {
+                if let link = ChainLink.responsibilityChainTable[identifier] {
+                    // we have existing link for parent
+                    parentLink = link
+                } else {
+                    // we create new link for paret
+                    weak var weakParent = parent
+                    parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { weakParent?.trackedProperties } )
+                    ChainLink.responsibilityChainTable[identifier] = parentLink
+                }
             }
+            
+            let newLink = ChainLink.Chainer(instanceProperties: trackedProperties, classProperties: { [weak self] in self?.trackedProperties }, parent: parentLink)
+            ChainLink.responsibilityChainTable[self.uniqueIdentifier] = newLink
         }
         
-        let newLink = ChainLink.Chainer(instanceProperties: trackedProperties, classProperties: { [weak self] in self?.trackedProperties }, parent: parentLink)
-        ChainLink.responsibilityChainTable[self.uniqueIdentifier] = newLink
+        if NSThread.isMainThread() {
+            setupClosure()
+        } else {
+            dispatch_async(dispatch_get_main_queue()) {
+                setupClosure()
+            }
+        }
     }
 }
 
