@@ -70,17 +70,14 @@ public extension Key {
         let separator = "."
         let elements = keyDescription.componentsSeparatedByString(separator)
         
-        if let first = elements.first {
-            return elements.reduce(first, combine: { (result, element) -> String in
-                if result.componentsSeparatedByString(separator).last == element {
-                    return result
-                } else {
-                    return result + "." + element
-                }
-            })
-        } else {
-            return keyDescription
-        }
+        let first = elements.first! // ->> should never be nil
+        return elements.reduce(first, combine: { (result, element) -> String in
+            if result.componentsSeparatedByString(separator).last == element {
+                return result
+            } else {
+                return result + "." + element
+            }
+        })
     }
 }
 

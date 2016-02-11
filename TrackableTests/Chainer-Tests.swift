@@ -35,7 +35,7 @@ class ChainerTests : QuickSpec {
         }
         
         describe("ChainLink") {
-            context("tracker") {
+            describe("tracker") {
                 it("should track event") {
                     let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
                     let classProperties : Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
@@ -74,7 +74,7 @@ class ChainerTests : QuickSpec {
                 }
             }
 
-            context("chainer") {
+            describe("chainer") {
                 it("should call parent link") {
                     let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
                     let classProperties : Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]

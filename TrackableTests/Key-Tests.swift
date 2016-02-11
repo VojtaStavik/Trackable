@@ -40,7 +40,7 @@ class KeyTests : QuickSpec {
         }
         
         describe("Key") {
-            context("description") {
+            describe("description") {
                 it("should be generated based on namespace structure") {
                     expect(TestKeys.Tests.test1.description).to(equal("TrackableTests.KeyTests.TestKeys.Tests.test1"))
                     expect(TestKeys.Tests.test2.description).to(equal("TrackableTests.KeyTests.TestKeys.Tests.test2"))

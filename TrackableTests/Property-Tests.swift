@@ -32,7 +32,7 @@ class PropertyTests : QuickSpec {
         }
         
         describe("Set of properties") {
-            context("updateValueFrom") {
+            describe("updateValueFrom") {
                 it("should add new value") {
                     var testSet = Set<TrackedProperty>([TestKeys.value1 ~>> "value1old" , TestKeys.value2 ~>> "value2old"])
                     let newValue = TestKeys.value3 ~>> "value3new"
