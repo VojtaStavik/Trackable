@@ -2,8 +2,8 @@
 //  Trackable-Tests.swift
 //  Trackable
 //
-//  Created by Vojta Stavik on 07/12/15.
-//  Copyright © 2015 STRV. All rights reserved.
+//  Created by Vojta Stavik (vojtastavik.com) on 07/12/15.
+//  Copyright © 2015 Vojta Stavik. All rights reserved.
 //
 
 import Foundation

@@ -2,8 +2,8 @@
 //  Property.swift
 //  Trackable
 //
-//  Created by Vojta Stavik on 06/12/15.
-//  Copyright © 2015 STRV. All rights reserved.
+//  Created by Vojta Stavik (vojtastavik.com) on 06/12/15.
+//  Copyright © 2015 Vojta Stavik. All rights reserved.
 //
 
 import Foundation

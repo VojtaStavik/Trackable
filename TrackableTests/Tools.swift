@@ -2,7 +2,7 @@
 //  Tools.swift
 //  Trackable
 //
-//  Created by Vojta Stavik on 11/02/16.
+//  Created by Vojta Stavik (vojtastavik.com) on 11/02/16.
 //  Copyright © 2016 STRV. All rights reserved.
 //
 
