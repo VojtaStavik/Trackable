@@ -1,5 +1,6 @@
 # Trackable
-[![Build Status](https://travis-ci.org/VojtaStavik/Trackable.svg?branch=master)](https://travis-ci.org/VojtaStavik/Trackable) [![codecov.io](https://codecov.io/github/VojtaStavik/Trackable/coverage.svg?branch=master)](https://codecov.io/github/VojtaStavik/Trackable?branch=master) ![Cocoapods Compatible](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg) ![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
+[![Build Status](https://travis-ci.org/VojtaStavik/Trackable.svg?branch=master)](https://travis-ci.org/VojtaStavik/Trackable) [![codecov](https://codecov.io/gh/VojtaStavik/Trackable/branch/master/graph/badge.svg)](https://codecov.io/gh/VojtaStavik/Trackable)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
 
 **Trackable** is a simple analytics integration helper library. It’s especially designed for easy and comfortable integration with existing projects.
 
