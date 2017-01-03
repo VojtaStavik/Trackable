@@ -1,18 +1,20 @@
 PODS:
-  - Mixpanel (2.9.1):
-    - Mixpanel/Mixpanel (= 2.9.1)
-  - Mixpanel/Mixpanel (2.9.1)
-  - Nimble (3.0.0)
-  - Quick (0.8.0)
+  - Mixpanel (3.0.8):
+    - Mixpanel/Mixpanel (= 3.0.8)
+  - Mixpanel/Mixpanel (3.0.8)
+  - Nimble (5.1.1)
+  - Quick (1.0.0)
 
 DEPENDENCIES:
   - Mixpanel
-  - Nimble (= 3.0.0)
-  - Quick (~> 0.8.0)
+  - Nimble
+  - Quick
 
 SPEC CHECKSUMS:
-  Mixpanel: 5ca24b2a05f4c77fe9bcfe7671d681d0f3f8d76f
-  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
-  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+  Mixpanel: 550a23d5dd95f8e9cda21e697661ffddbc8da46b
+  Nimble: 415e3aa3267e7bc2c96b05fa814ddea7bb686a29
+  Quick: 8024e4a47e6cc03a9d5245ef0948264fc6d27cff
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 031fe2fe8b28f8440262c2a0de4ecf774036cd62
+
+COCOAPODS: 1.2.0.beta.3

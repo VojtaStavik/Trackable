@@ -11,26 +11,26 @@ import Trackable
 
 class AlbumListTVC: UITableViewController {
 
-    var albums : [Album]!
+    var albums: [Album]!
 
     // MARK: - Table view data source
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albums.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = albums[indexPath.row].name
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         track(Events.User.didSelectAlbum)
     }
     
     // MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationVC = segue.destinationViewController as! AlbumDetailVC
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! AlbumDetailVC
         let selectedAlbum = albums[tableView.indexPathForSelectedRow!.row]
         
         destinationVC.title = selectedAlbum.name
@@ -38,7 +38,7 @@ class AlbumListTVC: UITableViewController {
         destinationVC.setupTrackableChain(trackedProperties: [Keys.previousVC ~>> "Album list"], parent: self)
     }
     
-    var selectedAlbum : Album? {
+    var selectedAlbum: Album? {
         if let indexPath = tableView.indexPathForSelectedRow {
             return albums[indexPath.row]
         } else {
@@ -48,7 +48,7 @@ class AlbumListTVC: UITableViewController {
 }
 
 extension AlbumListTVC : TrackableClass {
-    var trackedProperties : Set<TrackedProperty> {
-        return [Keys.albumName ~>> selectedAlbum?.name ?? "none"]
+    var trackedProperties: Set<TrackedProperty> {
+        return [Keys.albumName ~>> selectedAlbum?.name ?? "name"]
     }
 }

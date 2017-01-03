@@ -11,14 +11,14 @@ import Foundation
 import Quick
 import Nimble
 
-class TrackableTests : QuickSpec {
+class TrackableTests: QuickSpec {
     
-    enum TestEvents : String, Event {
+    enum TestEvents: String, Event {
         case Event1
     }
     
-    enum TestKeys : String, Key {
-        enum Tests : String, Key {
+    enum TestKeys: String, Key {
+        enum Tests: String, Key {
             case test1
             case test2
         }
@@ -31,19 +31,19 @@ class TrackableTests : QuickSpec {
             keyPrefixToRemove = nil
             eventPrefixToRemove = nil
             
-            ChainLink.responsibilityChainTable = [ObjectIdentifier : ChainLink]()
+            ChainLink.responsibilityChainTable = [ObjectIdentifier: ChainLink]()
         }
 
         describe("Trackable") {
             it("object returns exmpty set by default") {
-                class TestClass : TrackableClass { }
+                class TestClass: TrackableClass { }
                 let testClass = TestClass()
                 expect(testClass.trackedProperties.isEmpty).to(beTrue())
             }
 
             describe("track") {
                 it("should track event") {
-                    class TestClass : TrackableClass {}
+                    class TestClass: TrackableClass {}
                     let testClass = TestClass()
                     
                     var receivedEventName: String?
@@ -56,12 +56,12 @@ class TrackableTests : QuickSpec {
                     
                     testClass.track(TestEvents.Event1)
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
+                    expect(receivedEventName) == TestEvents.Event1.description
                     expect(receivedProperties?.isEmpty).to(beTrue())
                 }
 
                 it("should track event properties") {
-                    class TestClass : TrackableClass {}
+                    class TestClass: TrackableClass {}
                     let testClass = TestClass()
                     
                     var receivedEventName: String?
@@ -74,14 +74,14 @@ class TrackableTests : QuickSpec {
                     
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.test1 ~>> "Hello", TestKeys.Tests.test2 ~>> true])
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "Hello"
                     expect(receivedProperties?[TestKeys.Tests.test2.description] as? Bool).to(beTrue())
                 }
 
                 it("should append class properties to track event properties") {
-                    class TestClass : TrackableClass {
-                        var trackedProperties : Set<TrackedProperty> {
+                    class TestClass: TrackableClass {
+                        var trackedProperties: Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
                     }
@@ -97,13 +97,13 @@ class TrackableTests : QuickSpec {
                     
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "World"])
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
-                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String).to(equal("World"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "Hello"
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String) == "World"
                 }
 
                 it("should append instance properties to track event properties") {
-                    class TestClass : TrackableClass { }
+                    class TestClass: TrackableClass { }
                     let testClass = TestClass()
 
                     var receivedEventName: String?
@@ -117,14 +117,14 @@ class TrackableTests : QuickSpec {
                     testClass.setupTrackableChain(trackedProperties: [TestKeys.test1 ~>> "Hello"], parent: nil)
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "World"])
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
-                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String).to(equal("World"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "Hello"
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String) == "World"
                 }
                 
                 context("when run from background thread") {
                     it("should track event") {
-                        class TestClass : TrackableClass {}
+                        class TestClass: TrackableClass {}
                         let testClass = TestClass()
                         
                         var receivedEventName: String?
@@ -144,7 +144,7 @@ class TrackableTests : QuickSpec {
                     }
                     
                     it("should track event properties") {
-                        class TestClass : TrackableClass {}
+                        class TestClass: TrackableClass {}
                         let testClass = TestClass()
                         
                         var receivedEventName: String?
@@ -165,8 +165,8 @@ class TrackableTests : QuickSpec {
                     }
                     
                     it("should append class properties to track event properties") {
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "Hello"]
                             }
                         }
@@ -190,7 +190,7 @@ class TrackableTests : QuickSpec {
                     }
                     
                     it("should append instance properties to track event properties") {
-                        class TestClass : TrackableClass { }
+                        class TestClass: TrackableClass { }
                         let testClass = TestClass()
                         
                         var receivedEventName: String?
@@ -215,8 +215,8 @@ class TrackableTests : QuickSpec {
             
             describe("instance properties") {
                 it("should override class properties") {
-                    class TestClass : TrackableClass {
-                        var trackedProperties : Set<TrackedProperty> {
+                    class TestClass: TrackableClass {
+                        var trackedProperties: Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
                     }
@@ -233,14 +233,14 @@ class TrackableTests : QuickSpec {
                     testClass.setupTrackableChain(trackedProperties: [TestKeys.test1 ~>> "World"], parent: nil)
                     testClass.track(TestEvents.Event1)
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("World"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "World"
                 }
                 
                 context("when run from background thread") {
                     it("should override class properties") {
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "Hello"]
                             }
                         }
@@ -267,8 +267,8 @@ class TrackableTests : QuickSpec {
 
             describe("event properties") {
                 it("should override class and instance properties") {
-                    class TestClass : TrackableClass {
-                        var trackedProperties : Set<TrackedProperty> {
+                    class TestClass: TrackableClass {
+                        var trackedProperties: Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
                     }
@@ -285,14 +285,14 @@ class TrackableTests : QuickSpec {
                     testClass.setupTrackableChain(trackedProperties: [TestKeys.test1 ~>> "World"], parent: nil)
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.test1 ~>> "Finally"])
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Finally"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "Finally"
                 }
                 
                 context("when run from background thread") {
                     it("should override class and instance properties") {
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "Hello"]
                             }
                         }
@@ -319,8 +319,8 @@ class TrackableTests : QuickSpec {
 
             describe("tracked properties of all types") {
                 it("should be tracked") {
-                    class TestClass : TrackableClass {
-                        var trackedProperties : Set<TrackedProperty> {
+                    class TestClass: TrackableClass {
+                        var trackedProperties: Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
                     }
@@ -337,21 +337,21 @@ class TrackableTests : QuickSpec {
                     testClass.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> "World"], parent: nil)
                     testClass.track(TestEvents.Event1, trackedProperties: [TestKeys.Tests.test2 ~>> "Finally"])
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
-                    expect(receivedProperties?[TestKeys.Tests.test1.description] as? String).to(equal("World"))
-                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String).to(equal("Finally"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "Hello"
+                    expect(receivedProperties?[TestKeys.Tests.test1.description] as? String) == "World"
+                    expect(receivedProperties?[TestKeys.Tests.test2.description] as? String) == "Finally"
                 }
                 
                 it("should override parent's properties for the same keys") {
-                    class TestClassParent : TrackableClass {
-                        var trackedProperties : Set<TrackedProperty> {
+                    class TestClassParent: TrackableClass {
+                        var trackedProperties: Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "ParentHello"]
                         }
                     }
                     
-                    class TestClass : TrackableClass {
-                        var trackedProperties : Set<TrackedProperty> {
+                    class TestClass: TrackableClass {
+                        var trackedProperties: Set<TrackedProperty> {
                             return [TestKeys.test1 ~>> "Hello"]
                         }
                     }
@@ -372,15 +372,15 @@ class TrackableTests : QuickSpec {
                     
                     testClass.track(TestEvents.Event1)
                     
-                    expect(receivedEventName).to(equal(TestEvents.Event1.description))
-                    expect(receivedProperties?[TestKeys.test1.description] as? String).to(equal("Hello"))
-                    expect(receivedProperties?[TestKeys.Tests.test1.description] as? String).to(equal("World"))
+                    expect(receivedEventName) == TestEvents.Event1.description
+                    expect(receivedProperties?[TestKeys.test1.description] as? String) == "Hello"
+                    expect(receivedProperties?[TestKeys.Tests.test1.description] as? String) == "World"
                 }
                 
                 context("when run from background thread") {
                     it("should be tracked") {
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "Hello"]
                             }
                         }
@@ -406,14 +406,14 @@ class TrackableTests : QuickSpec {
                     }
                     
                     it("should override parent's properties for the same keys") {
-                        class TestClassParent : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClassParent: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "ParentHello"]
                             }
                         }
                         
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> "Hello"]
                             }
                         }
@@ -446,9 +446,9 @@ class TrackableTests : QuickSpec {
             describe("setupTrackableChain") {
                 context("when parent link is nil") {
                     it("creates chain link properly") {
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
-                                return [TestKeys.test1 ~>> "test1" ,TestKeys.Tests.test2 ~>> true]
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
+                                return [TestKeys.test1 ~>> "test1", TestKeys.Tests.test2 ~>> true]
                             }
                         }
                         
@@ -457,10 +457,10 @@ class TrackableTests : QuickSpec {
                         
                         let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier]!
                         
-                        if case .Chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure , parent: let parrentLink) = link {
+                        if case .chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure, parent: let parrentLink) = link {
                             expect(parrentLink).to(beNil())
-                            expect(instanceProperties.count).to(equal(1))
-                            expect(classPropertiesClosure()?.count).to(equal(2))
+                            expect(instanceProperties.count) == 1
+                            expect(classPropertiesClosure()?.count) == 2
                         } else {
                             fail()
                         }
@@ -468,9 +468,9 @@ class TrackableTests : QuickSpec {
                     
                     context("when run from background thread") {
                         it("creates chain link properly") {
-                            class TestClass : TrackableClass {
-                                var trackedProperties : Set<TrackedProperty> {
-                                    return [TestKeys.test1 ~>> "test1" ,TestKeys.Tests.test2 ~>> true]
+                            class TestClass: TrackableClass {
+                                var trackedProperties: Set<TrackedProperty> {
+                                    return [TestKeys.test1 ~>> "test1", TestKeys.Tests.test2 ~>> true]
                                 }
                             }
                             
@@ -479,11 +479,11 @@ class TrackableTests : QuickSpec {
                                 testClass.setupTrackableChain(trackedProperties: [TestKeys.Tests.test1 ~>> 5], parent: nil)
                             }
                             
-                            var linkData: (instanceProperties: Set<TrackedProperty>?, classPropertiesClosure: () -> Set<TrackedProperty>? , parent: ChainLink?) {
+                            var linkData: (instanceProperties: Set<TrackedProperty>?, classPropertiesClosure: () -> Set<TrackedProperty>?, parent: ChainLink?) {
                                 guard let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier] else {
                                     return (nil, { return nil }, nil)
                                 }
-                                if case .Chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure , parent: let parentLink) = link {
+                                if case .chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure, parent: let parentLink) = link {
                                     return (instanceProperties, classPropertiesClosure, parentLink)
                                 }
                                 return (nil, { return nil }, nil)
@@ -498,14 +498,14 @@ class TrackableTests : QuickSpec {
                 
                 context("with parent link") {
                     it("creates chain link properly") {
-                        class TestClass : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
-                                return [TestKeys.test1 ~>> "test1" ,TestKeys.Tests.test2 ~>> true]
+                        class TestClass: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
+                                return [TestKeys.test1 ~>> "test1", TestKeys.Tests.test2 ~>> true]
                             }
                         }
                         
-                        class TestClass2 : TrackableClass {
-                            var trackedProperties : Set<TrackedProperty> {
+                        class TestClass2: TrackableClass {
+                            var trackedProperties: Set<TrackedProperty> {
                                 return [TestKeys.test1 ~>> true]
                             }
                         }
@@ -517,11 +517,11 @@ class TrackableTests : QuickSpec {
                         testClass.setupTrackableChain(trackedProperties: [], parent: testClass2)
                         let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier]!
                         
-                        if case .Chainer(instanceProperties: _ , classProperties: _ , parent: let parrentLink) = link {
-                            if case ChainLink.Tracker(instanceProperties: _, classProperties: let classPropertiesClosure) = parrentLink! {
-                                expect(classPropertiesClosure()?.count).to(equal(1))
-                                expect(classPropertiesClosure()?.first?.value as? Bool).to(equal(true))
-                                expect(classPropertiesClosure()?.first?.key).to(equal(TestKeys.test1.description))
+                        if case .chainer(instanceProperties: _, classProperties: _, parent: let parrentLink) = link {
+                            if case ChainLink.tracker(instanceProperties: _, classProperties: let classPropertiesClosure) = parrentLink! {
+                                expect(classPropertiesClosure()?.count) == 1
+                                expect(classPropertiesClosure()?.first?.value as? Bool) == true
+                                expect(classPropertiesClosure()?.first?.key) == TestKeys.test1.description
                             } else {
                                 fail()
                             }
@@ -532,14 +532,14 @@ class TrackableTests : QuickSpec {
                     
                     context("when run from background thread") {
                         it("creates chain link properly") {
-                            class TestClass : TrackableClass {
-                                var trackedProperties : Set<TrackedProperty> {
-                                    return [TestKeys.test1 ~>> "test1" ,TestKeys.Tests.test2 ~>> true]
+                            class TestClass: TrackableClass {
+                                var trackedProperties: Set<TrackedProperty> {
+                                    return [TestKeys.test1 ~>> "test1", TestKeys.Tests.test2 ~>> true]
                                 }
                             }
                             
-                            class TestClass2 : TrackableClass {
-                                var trackedProperties : Set<TrackedProperty> {
+                            class TestClass2: TrackableClass {
+                                var trackedProperties: Set<TrackedProperty> {
                                     return [TestKeys.test1 ~>> true]
                                 }
                             }
@@ -556,11 +556,11 @@ class TrackableTests : QuickSpec {
                                 guard let link = ChainLink.responsibilityChainTable[testClass.uniqueIdentifier] else {
                                     return { return nil }
                                 }
-                                if case .Chainer(instanceProperties: _, classProperties: _, parent: let parentLink) = link {
+                                if case .chainer(instanceProperties: _, classProperties: _, parent: let parentLink) = link {
                                     guard let parentLink = parentLink else {
                                         return { return nil }
                                     }
-                                    if case .Tracker(instanceProperties: _, classProperties: let classPropertiesClosure) = parentLink {
+                                    if case .tracker(instanceProperties: _, classProperties: let classPropertiesClosure) = parentLink {
                                         return classPropertiesClosure
                                     }
                                 }

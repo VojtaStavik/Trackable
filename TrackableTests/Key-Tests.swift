@@ -11,9 +11,9 @@ import Foundation
 import Quick
 import Nimble
 
-enum Beatles : String, Key {
+enum Beatles: String, Key {
     case John
-    enum Info : String, Key {
+    enum Info: String, Key {
         case Age
     }
 }
@@ -22,10 +22,10 @@ enum John: String, Key {
     case Age
 }
 
-class KeyTests : QuickSpec {
+class KeyTests: QuickSpec {
 
-    enum TestKeys : String, Key {
-        enum Tests : String, Key {
+    enum TestKeys: String, Key {
+        enum Tests: String, Key {
             case test1
             case test2
         }
@@ -42,9 +42,9 @@ class KeyTests : QuickSpec {
         describe("Key") {
             describe("description") {
                 it("should be generated based on namespace structure") {
-                    expect(TestKeys.Tests.test1.description).to(equal("TrackableTests.KeyTests.TestKeys.Tests.test1"))
-                    expect(TestKeys.Tests.test2.description).to(equal("TrackableTests.KeyTests.TestKeys.Tests.test2"))
-                    expect(TestKeys.test1.description).to(equal("TrackableTests.KeyTests.TestKeys.test1"))
+                    expect(TestKeys.Tests.test1.description) == "TrackableTests.KeyTests.TestKeys.Tests.test1"
+                    expect(TestKeys.Tests.test2.description) == "TrackableTests.KeyTests.TestKeys.Tests.test2"
+                    expect(TestKeys.test1.description) == "TrackableTests.KeyTests.TestKeys.test1"
                 }
             }
         }
@@ -61,12 +61,12 @@ class KeyTests : QuickSpec {
                 }
 
                 it("should merge key descriptions") {
-                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
-                    expect(key1.composeKeyWith(key3)).to(equal("TrackableTests.Beatles.John.KeyTests.TestKeys.Tests.test1"))
+                    expect(key1.composeKeyWith(key2)) == "TrackableTests.Beatles.John.Info.Age"
+                    expect(key1.composeKeyWith(key3)) == "TrackableTests.Beatles.John.KeyTests.TestKeys.Tests.test1"
                 }
 
                 it("should remove repeating elements from key descriptions") {
-                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.Info.Age"))
+                    expect(key1.composeKeyWith(key2)) == "TrackableTests.Beatles.John.Info.Age"
                 }
             }
 
@@ -76,11 +76,11 @@ class KeyTests : QuickSpec {
                 }
                 
                 it("should not merge key descriptions") {
-                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.TrackableTests.Beatles.Info.Age"))
+                    expect(key1.composeKeyWith(key2)) == "TrackableTests.Beatles.John.TrackableTests.Beatles.Info.Age"
                 }
                 
                 it("should not remove repeating elements from key descriptions") {
-                    expect(key1.composeKeyWith(key2)).to(equal("TrackableTests.Beatles.John.TrackableTests.Beatles.Info.Age"))
+                    expect(key1.composeKeyWith(key2)) == "TrackableTests.Beatles.John.TrackableTests.Beatles.Info.Age"
                 }
             }
         }
@@ -99,8 +99,8 @@ class KeyTests : QuickSpec {
                     let key1 = Beatles.John
                     let key2 = Beatles.Info.Age
                     let key3 = TestKeys.Tests.test1
-                    expect(key1.composeKeyWith(key2)).to(equal("Beatles.John.Info.Age"))
-                    expect(key1.composeKeyWith(key3)).to(equal("Beatles.John.KeyTests.TestKeys.Tests.test1"))
+                    expect(key1.composeKeyWith(key2)) == "Beatles.John.Info.Age"
+                    expect(key1.composeKeyWith(key3)) == "Beatles.John.KeyTests.TestKeys.Tests.test1"
                 }
             }
         }

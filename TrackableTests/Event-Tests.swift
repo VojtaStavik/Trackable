@@ -11,20 +11,18 @@ import Foundation
 import Quick
 import Nimble
 
-enum BeatlesEvents : String, Event {
+enum BeatlesEvents: String, Event {
     case Concert
-    enum Recordings : String, Event {
+    enum Recordings: String, Event {
         case AbbeyRoad
     }
 }
 
-class EventTests : QuickSpec {
+class EventTests: QuickSpec {
     override func spec() {
         beforeEach {
-            beforeEach {
-                keyPrefixToRemove = nil
-                eventPrefixToRemove = nil
-            }
+            keyPrefixToRemove = nil
+            eventPrefixToRemove = nil
         }
         
         describe("eventPrefixToRemove") {
@@ -33,8 +31,8 @@ class EventTests : QuickSpec {
                     eventPrefixToRemove = "TrackableTests."
                     let event1 = BeatlesEvents.Concert
                     let event2 = BeatlesEvents.Recordings.AbbeyRoad
-                    expect(event1.description).to(equal("BeatlesEvents.Concert"))
-                    expect(event2.description).to(equal("BeatlesEvents.Recordings.AbbeyRoad"))
+                    expect(event1.description) == "BeatlesEvents.Concert"
+                    expect(event2.description) == "BeatlesEvents.Recordings.AbbeyRoad"
                 }
             }
         }

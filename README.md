@@ -1,5 +1,7 @@
 # Trackable
-[![Build Status](https://travis-ci.org/VojtaStavik/Trackable.svg?branch=master)](https://travis-ci.org/VojtaStavik/Trackable) [![codecov](https://codecov.io/gh/VojtaStavik/Trackable/branch/master/graph/badge.svg)](https://codecov.io/gh/VojtaStavik/Trackable) ![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
+[![Build Status](https://travis-ci.org/VojtaStavik/Trackable.svg?branch=master)](https://travis-ci.org/VojtaStavik/Trackable) [![codecov](https://codecov.io/gh/VojtaStavik/Trackable/branch/master/graph/badge.svg)](https://codecov.io/gh/VojtaStavik/Trackable)
+![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg)
+![[Swift3](https://img.shields.io/badge/Swift-3.0.x-F16D39.svg?style=flat)]
 
 **Trackable** is a simple analytics integration helper library. It’s especially designed for easy and comfortable integration with existing projects.
 
@@ -26,7 +28,7 @@ To integrate Trackable into your Xcode project using CocoaPods, specify it in yo
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
 pod 'Trackable'
@@ -74,14 +76,14 @@ enum Events {
         case didSelectAlbum
         case didRateAlbum
     }
-    
+
     enum App : String, Event {
         case started
         case didBecomeActive
         case didEnterBackground
         case terminated
     }
-    
+
     enum AlbumListVC : String, Event {
         case didAppear
     }
@@ -92,7 +94,7 @@ enum Keys : String, Key {
     case albumName
     case userLikesAlbum
     case previousVC
-    
+
     enum App : String, Key {
         case uptime
         case reachabilityStatus
@@ -118,7 +120,7 @@ class AlbumDetailVC: UIViewController {
 
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
-    
+
     @IBAction func didPressButton(sender: UIButton) {
         let userLikesAlbum = (sender === yesButton)
         track(Events.User.didRateAlbum, trackedProperties: [Keys.userLikesAlbum ~>> userLikesAlbum])
@@ -154,7 +156,7 @@ import UIKit
 import Trackable
 
 class AlbumListTVC: UITableViewController {
-	… code … 
+	… code …
 
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -208,14 +210,14 @@ import Trackable
 
 class AlbumListTVC: UITableViewController {
 
-	… some code here … 
+	… some code here …
 
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destinationVC = segue.destinationViewController as! AlbumDetailVC
         destinationVC.setupTrackableChain([Keys.previousVC ~>> "Album list"], parent: self)
     }
-    
+
     var selectedAlbum : Album? {
         if let indexPath = tableView.indexPathForSelectedRow {
             return albums[indexPath.row]
@@ -254,7 +256,7 @@ class Analytics {
         Trackable.trackEventToRemoteServiceClosure = trackEventToMixpanel
         setupTrackableChain() // allows self to be part of the trackable chain
     }
-    
+
     func trackEventToMixpanel(eventName: String, trackedProperties: [String: AnyObject]) {        
         mixpanel.track(eventName, properties: trackedProperties)
     }
@@ -282,7 +284,7 @@ import Trackable
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         setupTrackableChain(parent: analytics)
         return true
@@ -291,11 +293,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         track(Events.App.didBecomeActive)
     }
-    
+
     func applicationDidEnterBackground(application: UIApplication) {
         track(Events.App.didEnterBackground)
     }
-    
+
     func applicationWillTerminate(application: UIApplication) {
         track(Events.App.terminated)
     }
@@ -311,6 +313,6 @@ extension AppDelegate : TrackableClass { }
 **Trackable** is released under the MIT license. See LICENSE for details.
 
 
---- 
+---
 
 *Readme inspired by [Alamofire](https://github.com/Alamofire/Alamofire)*. Thank you!

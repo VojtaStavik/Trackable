@@ -8,24 +8,23 @@
 
 import Foundation
 
-public protocol Event : CustomStringConvertible { }
+public protocol Event: CustomStringConvertible { }
 
 /**
     Specify a prefix which sould be removed from all event names. Usually you use this to remove project and/or module name.
 */
-public var eventPrefixToRemove : String? = nil
+public var eventPrefixToRemove: String? = nil
 
 public extension Event where Self : RawRepresentable {
     /**
         String representation of Event object.
      */
-    public var description : String {
-        var rawDescription = String(reflecting: self.dynamicType) + "." + "\(self.rawValue)"
+    public var description: String {
+        var rawDescription = String(reflecting: type(of: self)) + "." + "\(self.rawValue)"
         if let
             prefixToRemove = eventPrefixToRemove,
-            range = rawDescription.rangeOfString(prefixToRemove)
-        {
-            rawDescription.removeRange(range)
+            let range = rawDescription.range(of: prefixToRemove) {
+            rawDescription.removeSubrange(range)
         }
         
         return rawDescription

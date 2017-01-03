@@ -8,7 +8,6 @@
 
 import Foundation
 
-func inBackground(closure:  ()->()) {
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), closure)
+func inBackground(_ closure:  @escaping () -> Void) {
+    DispatchQueue.global(qos: .default).async(execute: closure)
 }
-

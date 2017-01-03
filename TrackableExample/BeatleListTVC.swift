@@ -18,29 +18,29 @@ class BeatleListTVC: UITableViewController {
         setupTrackableChain(parent: analytics)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         track(Events.AlbumListVC.didAppear)
     }
 
     // MARK: - Table view data source
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return beatles.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = beatles[indexPath.row].name
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         track(Events.User.didSelectBeatle)
     }
     
     // MARK: - Navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationVC = segue.destinationViewController as! AlbumListTVC
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! AlbumListTVC
         let selectedBeatle = beatles[tableView.indexPathForSelectedRow!.row]
         
         destinationVC.title = selectedBeatle.name + "'s albums"
@@ -51,8 +51,8 @@ class BeatleListTVC: UITableViewController {
 }
 
 extension BeatleListTVC : TrackableClass {
-    var trackedProperties : Set<TrackedProperty> {
-        var selectedBeatle : Beatle?
+    var trackedProperties: Set<TrackedProperty> {
+        var selectedBeatle: Beatle?
         if let indexPath = tableView.indexPathForSelectedRow {
             selectedBeatle = beatles[indexPath.row]
         }

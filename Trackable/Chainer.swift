@@ -9,21 +9,21 @@
 import Foundation
 
 indirect enum ChainLink {
-    case Tracker(instanceProperties: Set<TrackedProperty>, classProperties: () -> Set<TrackedProperty>?)
-    case Chainer(instanceProperties: Set<TrackedProperty>, classProperties: () -> Set<TrackedProperty>? , parent: ChainLink?)
+    case tracker(instanceProperties: Set<TrackedProperty>, classProperties: () -> Set<TrackedProperty>?)
+    case chainer(instanceProperties: Set<TrackedProperty>, classProperties: () -> Set<TrackedProperty>?, parent: ChainLink?)
 }
 
 extension ChainLink {
-    func track(event: Event, trackedProperties: Set<TrackedProperty>) {
+    func track(_ event: Event, trackedProperties: Set<TrackedProperty>) {
         switch self {
-        case .Tracker(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure):
+        case .tracker(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure):
             var properties = classPropertiesClosure() ?? Set<TrackedProperty>()
             properties.updateValuesFrom(instanceProperties)
             properties.updateValuesFrom(trackedProperties)
             
-            trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
+            trackEventToRemoteServiceClosure?(event.description, properties.dictionaryRepresentation)
             
-        case .Chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure, parent: let parent):
+        case .chainer(instanceProperties: let instanceProperties, classProperties: let classPropertiesClosure, parent: let parent):
             var properties = classPropertiesClosure() ?? Set<TrackedProperty>()
             properties.updateValuesFrom(instanceProperties)
             properties.updateValuesFrom(trackedProperties)
@@ -32,33 +32,33 @@ extension ChainLink {
                 parent.track(event, trackedProperties: properties)
             } else {
                 // parent was meanwhile released from memory, we just track the event
-                trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
+                trackEventToRemoteServiceClosure?(event.description, properties.dictionaryRepresentation)
             }
         }
     }
 }
 
 extension ChainLink {
-    static var responsibilityChainTable = [ObjectIdentifier : ChainLink]()
+    static var responsibilityChainTable = [ObjectIdentifier: ChainLink]()
     
     /*
     Remove released objects from the chain table and returns removed chainers
     */
-    static internal func cleanupResponsibilityChainTable() -> [ChainLink] {
-        var deletedChainers : [ChainLink] = []
+    @discardableResult static internal func cleanupResponsibilityChainTable() -> [ChainLink] {
+        var deletedChainers: [ChainLink] = []
         
         for (key, value) in ChainLink.responsibilityChainTable {
-            if case .Chainer(instanceProperties: _, classProperties: let classPropertiesClosure , parent: _) = value {
+            if case .chainer(instanceProperties: _, classProperties: let classPropertiesClosure, parent: _) = value {
                 if classPropertiesClosure() == nil {
                     // object is nil, we can delete his chainer
-                    deletedChainers.append(ChainLink.responsibilityChainTable.removeValueForKey(key)!)
+                    deletedChainers.append(ChainLink.responsibilityChainTable.removeValue(forKey: key)!)
                 }
             }
 
-            if case .Tracker(instanceProperties: _, classProperties: let classPropertiesClosure) = value {
+            if case .tracker(instanceProperties: _, classProperties: let classPropertiesClosure) = value {
                 if classPropertiesClosure() == nil {
                     // object is nil, we can delete his chainer
-                    deletedChainers.append(ChainLink.responsibilityChainTable.removeValueForKey(key)!)
+                    deletedChainers.append(ChainLink.responsibilityChainTable.removeValue(forKey: key)!)
                 }
             }
         }

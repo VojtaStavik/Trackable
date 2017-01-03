@@ -8,12 +8,12 @@
 
 import Foundation
 
-public protocol Key : CustomStringConvertible { }
+public protocol Key: CustomStringConvertible { }
 
 /**
     Specify a prefix which sould be removed from all keys. Usually you use this to remove project and/or module name.
 */
-public var keyPrefixToRemove : String? = nil
+public var keyPrefixToRemove: String? = nil
 
 /**
     
@@ -24,13 +24,12 @@ public extension Key where Self : RawRepresentable {
     /**
         String representation of Event object.
      */
-    public var description : String {
-        var rawDescription = String(reflecting: self.dynamicType) + "." + "\(self.rawValue)"
+    public var description: String {
+        var rawDescription = String(reflecting: type(of: self)) + "." + "\(self.rawValue)"
         if let
             prefixToRemove = keyPrefixToRemove,
-            range = rawDescription.rangeOfString(prefixToRemove)
-        {
-            rawDescription.removeRange(range)
+            let range = rawDescription.range(of: prefixToRemove) {
+            rawDescription.removeSubrange(range)
         }
         
         return rawDescription
@@ -41,7 +40,7 @@ public extension Key {
     /**
         Removes common prefix for both keys
      */
-    func composeKeyWith(key: Key) -> String {
+    func composeKeyWith(_ key: Key) -> String {
         guard smartKeyComposingEnabled else {
             return description + "." + key.description
         }
@@ -66,13 +65,13 @@ public extension Key {
     /**
         Removes repeating parts of the key
      */
-    func removeRepeatingParts(keyDescription: String) -> String {
+    func removeRepeatingParts(_ keyDescription: String) -> String {
         let separator = "."
-        let elements = keyDescription.componentsSeparatedByString(separator)
+        let elements = keyDescription.components(separatedBy: separator)
         
         let first = elements.first! // ->> should never be nil
-        return elements.reduce(first, combine: { (result, element) -> String in
-            if result.componentsSeparatedByString(separator).last == element {
+        return elements.reduce(first, { (result, element) -> String in
+            if result.components(separatedBy: separator).last == element {
                 return result
             } else {
                 return result + "." + element
@@ -82,7 +81,7 @@ public extension Key {
 }
 
 extension String : Key {
-    public var description : String {
+    public var description: String {
         return self
     }
 }

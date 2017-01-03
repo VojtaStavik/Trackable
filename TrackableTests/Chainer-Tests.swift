@@ -11,14 +11,14 @@ import Foundation
 import Quick
 import Nimble
 
-class ChainerTests : QuickSpec {
+class ChainerTests: QuickSpec {
     
-    enum TestEvents : String, Event {
+    enum TestEvents: String, Event {
         case Test
     }
     
-    enum TestKeys : String, Key {
-        enum Tests : String, Key {
+    enum TestKeys: String, Key {
+        enum Tests: String, Key {
             case bool
             case string
         }
@@ -31,14 +31,14 @@ class ChainerTests : QuickSpec {
             keyPrefixToRemove = nil
             eventPrefixToRemove = nil
             
-            ChainLink.responsibilityChainTable = [ObjectIdentifier : ChainLink]()
+            ChainLink.responsibilityChainTable = [ObjectIdentifier: ChainLink]()
         }
         
         describe("ChainLink") {
             describe("tracker") {
                 it("should track event") {
-                    let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
-                    let classProperties : Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
+                    let instanceProperties: Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
+                    let classProperties: Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
@@ -48,15 +48,15 @@ class ChainerTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    let link = ChainLink.Tracker(instanceProperties: instanceProperties, classProperties: { classProperties })
+                    let link = ChainLink.tracker(instanceProperties: instanceProperties, classProperties: { classProperties })
                     link.track(TestEvents.Test, trackedProperties:  [])
-                    expect(receivedEventName).to(equal("TrackableTests.ChainerTests.TestEvents.Test"))
+                    expect(receivedEventName) == "TrackableTests.ChainerTests.TestEvents.Test"
                     expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.bool"] as? Bool).to(beTrue())
-                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String).to(equal("Hello"))
+                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String) == "Hello"
                 }
 
                 it("should track event when self is nil") {
-                    let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
+                    let instanceProperties: Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
@@ -66,18 +66,18 @@ class ChainerTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    let link = ChainLink.Tracker(instanceProperties: instanceProperties, classProperties: { return nil} )
+                    let link = ChainLink.tracker(instanceProperties: instanceProperties, classProperties: { return nil})
                     link.track(TestEvents.Test, trackedProperties:  [])
-                    expect(receivedEventName).to(equal("TrackableTests.ChainerTests.TestEvents.Test"))
+                    expect(receivedEventName) == "TrackableTests.ChainerTests.TestEvents.Test"
                     expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.bool"] as? Bool).to(beTrue())
-                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String).to(equal("Hello"))
+                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String) == "Hello"
                 }
             }
 
             describe("chainer") {
                 it("should call parent link") {
-                    let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
-                    let classProperties : Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
+                    let instanceProperties: Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
+                    let classProperties: Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
@@ -87,18 +87,18 @@ class ChainerTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    let parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { return [] })
+                    let parentLink = ChainLink.tracker(instanceProperties: [], classProperties: { return [] })
                     
-                    let link = ChainLink.Chainer(instanceProperties: instanceProperties, classProperties: { classProperties }, parent: parentLink)
+                    let link = ChainLink.chainer(instanceProperties: instanceProperties, classProperties: { classProperties }, parent: parentLink)
                     link.track(TestEvents.Test, trackedProperties:  [])
                     
-                    expect(receivedEventName).to(equal("TrackableTests.ChainerTests.TestEvents.Test"))
+                    expect(receivedEventName) == "TrackableTests.ChainerTests.TestEvents.Test"
                     expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.bool"] as? Bool).to(beTrue())
-                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String).to(equal("Hello"))
+                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String) == "Hello"
                 }
 
                 it("should call parent link when self is nil") {
-                    let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
+                    let instanceProperties: Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
@@ -108,19 +108,19 @@ class ChainerTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    let parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { return [] })
+                    let parentLink = ChainLink.tracker(instanceProperties: [], classProperties: { return [] })
                     
-                    let link = ChainLink.Chainer(instanceProperties: instanceProperties, classProperties: { nil }, parent: parentLink)
+                    let link = ChainLink.chainer(instanceProperties: instanceProperties, classProperties: { nil }, parent: parentLink)
                     link.track(TestEvents.Test, trackedProperties:  [])
                     
-                    expect(receivedEventName).to(equal("TrackableTests.ChainerTests.TestEvents.Test"))
+                    expect(receivedEventName) == "TrackableTests.ChainerTests.TestEvents.Test"
                     expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.bool"] as? Bool).to(beTrue())
-                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String).to(equal("Hello"))
+                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String) == "Hello"
                 }
 
                 it("should track event when parent doesn't exist") {
-                    let instanceProperties : Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
-                    let classProperties : Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
+                    let instanceProperties: Set<TrackedProperty> = [TestKeys.Tests.string ~>> "Hello", TestKeys.Tests.bool ~>> true]
+                    let classProperties: Set<TrackedProperty> = [TestKeys.Tests.bool ~>> false]
                     
                     var receivedEventName: String?
                     var receivedProperties: [String: AnyObject]?
@@ -130,23 +130,23 @@ class ChainerTests : QuickSpec {
                         receivedProperties = trackedProperties
                     }
                     
-                    let link = ChainLink.Chainer(instanceProperties: instanceProperties, classProperties: { classProperties }, parent: nil)
+                    let link = ChainLink.chainer(instanceProperties: instanceProperties, classProperties: { classProperties }, parent: nil)
                     link.track(TestEvents.Test, trackedProperties:  [])
                     
-                    expect(receivedEventName).to(equal("TrackableTests.ChainerTests.TestEvents.Test"))
+                    expect(receivedEventName) == "TrackableTests.ChainerTests.TestEvents.Test"
                     expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.bool"] as? Bool).to(beTrue())
-                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String).to(equal("Hello"))
+                    expect(receivedProperties?["TrackableTests.ChainerTests.TestKeys.Tests.string"] as? String) == "Hello"
                 }
             }
             
             it("should delete ChainLinks for released objects") {
-                class A : TrackableClass { }
-                class B : TrackableClass { }
-                class C : TrackableClass { }
+                class A: TrackableClass { }
+                class B: TrackableClass { }
+                class C: TrackableClass { }
                 
-                var identifierA : ObjectIdentifier?
-                var identifierB : ObjectIdentifier?
-                var identifierC : ObjectIdentifier?
+                var identifierA: ObjectIdentifier?
+                var identifierB: ObjectIdentifier?
+                var identifierC: ObjectIdentifier?
                 
                 autoreleasepool {
                     let classA = A()

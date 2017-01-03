@@ -9,12 +9,12 @@
 import Foundation
 
 struct Beatle {
-    let name : String
-    let albums : [Album]
+    let name: String
+    let albums: [Album]
 }
 
 struct Album {
-    let name : String
+    let name: String
 }
 
 struct Beatles {

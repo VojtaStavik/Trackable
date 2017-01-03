@@ -11,13 +11,13 @@ import Trackable
 
 class AlbumDetailVC: UIViewController {
 
-    var album : Album!
+    var album: Album!
 
     @IBOutlet weak var yesButton: UIButton!
     @IBOutlet weak var noButton: UIButton!
     
-    @IBAction func didPressButton(sender: UIButton) {
-        let userLikesAlbum = sender === yesButton
+    @IBAction func didPressButton(_ sender: UIButton) {
+        let userLikesAlbum = (sender === yesButton)
         track(Events.User.didRateAlbum, trackedProperties: [Keys.userLikesAlbum ~>> userLikesAlbum])
     }
 }

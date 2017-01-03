@@ -13,7 +13,7 @@ import Foundation
     - parameter eventName: Event identifier
     - parameter trackedProperties: Event properties
 */
-public var trackEventToRemoteServiceClosure : ( (eventName: String, trackedProperties: [String: AnyObject]) -> Void )? = nil
+public var trackEventToRemoteServiceClosure : ( (_ eventName: String, _ trackedProperties: [String: AnyObject]) -> Void )? = nil
 
 /*
     Three levels of trackable properties:
@@ -38,7 +38,6 @@ public extension TrackableClass {
     var trackedProperties: Set<TrackedProperty> { return [] }
 }
 
-
 // -----------------------------
 // Track event functions
 public extension TrackableClass {
@@ -47,7 +46,7 @@ public extension TrackableClass {
         - parameter event: Event identifier
         - parameter trackedProperties: Properties added to the event
      */
-    public func track(event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
+    public func track(_ event: Event, trackedProperties: Set<TrackedProperty>? = nil) {
         let trackClosure: () -> Void = {
             if let ownLink = ChainLink.responsibilityChainTable[self.uniqueIdentifier] {
                 ownLink.track(event, trackedProperties: trackedProperties ?? [])
@@ -57,21 +56,20 @@ public extension TrackableClass {
                 if let eventProperties = trackedProperties {
                     properties.updateValuesFrom(eventProperties)
                 }
-                trackEventToRemoteServiceClosure?(eventName: event.description, trackedProperties: properties.dictionaryRepresentation)
+                trackEventToRemoteServiceClosure?(event.description, properties.dictionaryRepresentation)
             }
         }
         
-        if NSThread.isMainThread() {
+        if Thread.isMainThread {
             trackClosure()
         } else {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 trackClosure()
             }
         }
 
     }
 }
-
 
 // -----------------------------
 // Setup functions
@@ -81,7 +79,7 @@ public extension TrackableClass {
         - parameter trackedProperties: Properties which will be added to all events tracked on self
         - parameter parent: Trackable parent for *self*. Events are not tracked directly but they are resend to parent.
      */
-    public func setupTrackableChain(trackedProperties trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
+    public func setupTrackableChain(trackedProperties: Set<TrackedProperty> = [], parent: TrackableClass? = nil) {
 
         let setupClosure: () -> Void = {
             var parentLink: ChainLink? = nil
@@ -93,19 +91,19 @@ public extension TrackableClass {
                 } else {
                     // we create new link for paret
                     weak var weakParent = parent
-                    parentLink = ChainLink.Tracker(instanceProperties: [], classProperties: { weakParent?.trackedProperties } )
+                    parentLink = ChainLink.tracker(instanceProperties: [], classProperties: { weakParent?.trackedProperties })
                     ChainLink.responsibilityChainTable[identifier] = parentLink
                 }
             }
             
-            let newLink = ChainLink.Chainer(instanceProperties: trackedProperties, classProperties: { [weak self] in self?.trackedProperties }, parent: parentLink)
+            let newLink = ChainLink.chainer(instanceProperties: trackedProperties, classProperties: { [weak self] in self?.trackedProperties }, parent: parentLink)
             ChainLink.responsibilityChainTable[self.uniqueIdentifier] = newLink
         }
         
-        if NSThread.isMainThread() {
+        if Thread.isMainThread {
             setupClosure()
         } else {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 setupClosure()
             }
         }
@@ -113,7 +111,7 @@ public extension TrackableClass {
 }
 
 extension TrackableClass {
-    var uniqueIdentifier : ObjectIdentifier {
+    var uniqueIdentifier: ObjectIdentifier {
         return ObjectIdentifier(self)
     }
 }
