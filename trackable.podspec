@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Trackable'
-  s.version = '0.6'
+  s.version = '0.7'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary = 'Swift app analytics using protocol extensions'
   s.homepage = 'https://github.com/VojtaStavik/Trackable'
