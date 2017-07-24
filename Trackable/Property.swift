@@ -46,6 +46,22 @@ public func ~>> (key: Key, value: Set<TrackedProperty>) -> TrackedProperty {
     return TrackedProperty(key: key, value: value)
 }
 
+public func ~>> (key: Key, value: [String]) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: [Double]) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: [Int]) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
+public func ~>> (key: Key, value: [Bool]) -> TrackedProperty {
+    return TrackedProperty(key: key, value: value)
+}
+
 extension TrackedProperty : Equatable { }
 public func ==(l: TrackedProperty, r: TrackedProperty) -> Bool {
     return l.key == r.key
