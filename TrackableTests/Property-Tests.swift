@@ -18,6 +18,7 @@ class PropertyTests: QuickSpec {
         case value2
         case value3
         case value4
+        case value5
         
         enum Details: String, Key {
             case detail1
@@ -99,7 +100,27 @@ class PropertyTests: QuickSpec {
                 let testPropery = TestKeys.value1 ~>> true
                 expect(testPropery.value as? Bool) == true
             }
-            
+			
+            it("should init with [String]") {
+                let testPropery = TestKeys.value1 ~>> ["TestString1", "TestString2"]
+                expect(testPropery.value as? [String]) == ["TestString1", "TestString2"]
+            }
+			
+            it("should init with [Int]") {
+                let testPropery = TestKeys.value1 ~>> [5, 6]
+                expect(testPropery.value as? [Int]) == [5, 6]
+            }
+
+            it("should init with [Double]") {
+                let testPropery = TestKeys.value1 ~>> [5.63, 6.53]
+                expect(testPropery.value as? [Double]) == [5.63, 6.53]
+            }
+
+            it("should init with [Bool]") {
+                let testPropery = TestKeys.value1 ~>> [true, false]
+                expect(testPropery.value as? [Bool]) == [true, false]
+            }
+			
             it("should init with Set of properties") {
                 let value: Set<TrackedProperty> = [TestKeys.Details.detail1 ~>> "detail1"]
                 let testProperty = TestKeys.value1 ~>> value
@@ -115,11 +136,12 @@ class PropertyTests: QuickSpec {
             }
 
             it("should convert self to dictionary") {
-                let testProperties: Set<TrackedProperty>= [
+                let testProperties: Set<TrackedProperty> = [
                     TestKeys.value1 ~>> true,
                     TestKeys.value2 ~>> "STP",
                     TestKeys.value3 ~>> 5.66,
-                    TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"]
+                    TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"],
+                    TestKeys.value5 ~>> ["TestString1", "TestString2"]
                 ]
                 
                 let dictionary = testProperties.dictionaryRepresentation
@@ -127,6 +149,7 @@ class PropertyTests: QuickSpec {
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String) == "STP"
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double) == 5.66
                 expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String) == "detail"
+                expect(dictionary["TrackableTests.PropertyTests.TestKeys.value5"] as? [String]) == ["TestString1", "TestString2"]
             }
         }
         
@@ -138,7 +161,8 @@ class PropertyTests: QuickSpec {
             
             let set2: Set<TrackedProperty> = [
                 TestKeys.value3 ~>> 5.66,
-                TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"]
+                TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"],
+                TestKeys.value5 ~>> ["TestString1", "TestString2"]
             ]
             
             let dictionary = (set1 + set2).dictionaryRepresentation
@@ -146,6 +170,7 @@ class PropertyTests: QuickSpec {
             expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String) == "STP"
             expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double) == 5.66
             expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String) == "detail"
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value5"] as? [String]) == ["TestString1", "TestString2"]
         }
         
         it("should properly implement += for sets") {
@@ -156,7 +181,8 @@ class PropertyTests: QuickSpec {
             
             let set2: Set<TrackedProperty> = [
                 TestKeys.value3 ~>> 5.66,
-                TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"]
+                TestKeys.value4 ~>> [TestKeys.Details.detail2 ~>> "detail"],
+                TestKeys.value5 ~>> ["TestString1", "TestString2"]
             ]
             
             set1 += set2
@@ -165,6 +191,7 @@ class PropertyTests: QuickSpec {
             expect(dictionary["TrackableTests.PropertyTests.TestKeys.value2"] as? String) == "STP"
             expect(dictionary["TrackableTests.PropertyTests.TestKeys.value3"] as? Double) == 5.66
             expect(dictionary["TrackableTests.PropertyTests.TestKeys.value4.Details.detail2"] as? String) == "detail"
+            expect(dictionary["TrackableTests.PropertyTests.TestKeys.value5"] as? [String]) == ["TestString1", "TestString2"]
         }
     }
 }
